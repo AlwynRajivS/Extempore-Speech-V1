@@ -89,7 +89,38 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   font-size:.68rem;font-weight:700;color:var(--ink2)
 }
 .ts .d{width:6px;height:6px;border-radius:50%}
-@media(max-width:500px){.ts:nth-child(n+2){display:none}.topbar-mid{display:none}}
+
+/* Mobile topbar: hide stat badges, keep filters visible below bar */
+@media(max-width:500px){
+  .ts{display:none}
+  .topbar-mid{display:none}
+  .topbar{height:auto;padding:8px 12px;flex-wrap:wrap;gap:6px}
+  .brand{flex:1}
+  .topbar-right{flex-shrink:0}
+  .gm-btn{font-size:.62rem;padding:4px 8px}
+}
+
+/* Mobile filter bar — shown below topbar on small screens */
+.mobile-filters{
+  display:none;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bdr);
+  padding:8px 12px;gap:6px;
+  position:sticky;top:0;z-index:199;
+  box-shadow:0 2px 8px rgba(26,21,16,.05)
+}
+@media(max-width:500px){
+  .mobile-filters{display:flex;flex-wrap:wrap;align-items:center;top:var(--mob-topbar-h,54px)}
+  .mobile-filters .fchip{flex:1;min-width:0;justify-content:center}
+  .mobile-filters .fchip select{max-width:none;width:100%}
+  .mobile-stat-row{
+    display:flex;gap:5px;padding:6px 12px;
+    background:var(--bg);border-bottom:1px solid var(--bdr);
+    position:sticky;z-index:198
+  }
+  .mobile-stat-row .ts{display:flex;flex:1;justify-content:center;border-radius:8px;padding:5px 6px;font-size:.63rem}
+}
 
 /* ══════════════════════════════════════════════════
    BOTTOM NAV
@@ -617,10 +648,45 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
   .stats-row{gap:6px}
   .schip .num{font-size:1.3rem}
   .students-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  /* Students page */
+  .stbar{flex-direction:column;gap:6px}
+  .sinput{min-width:unset;width:100%}
+  .tabs{width:100%}
+  .tab{flex:1;text-align:center}
+  .add-student-row{flex-direction:column}
+  .add-student-row .finput{max-width:100%!important}
+  /* Topics page */
+  .form-row{flex-direction:column}
+  .fselect,.finput{min-width:unset;width:100%}
+  /* Wheels */
+  .wheel-card{padding:14px 10px 12px}
+  .wfoot{flex-wrap:wrap;justify-content:center}
+  .btn-both{font-size:.82rem;padding:12px 14px}
+  /* Result card */
+  .result-card{flex-direction:column;align-items:flex-start}
+  /* Comment panel */
+  .cp-row{flex-direction:column}
+  /* Modal */
+  .mactions{flex-direction:column;width:100%}
+  .mactions .btn{width:100%}
+  /* Report */
+  .report-opts{grid-template-columns:1fr}
+  /* Analytics */
+  .aw-big{font-size:1.5rem}
+  /* History */
+  .hitem{grid-template-columns:auto 1fr}
+  .hright{display:none}
+  /* Timer */
+  .tpresets{gap:4px}
+  .tpre{padding:5px 9px;font-size:.7rem}
+  .tdisplay{font-size:2.4rem}
 }
 @media(max-width:360px){
   canvas{width:215px!important;height:215px!important}
   .students-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .an-grid{grid-template-columns:1fr}
+  .schip .num{font-size:1.1rem}
 }
 
 /* ════════════════════ GAME MODE ════════════════════ */
@@ -792,6 +858,23 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
   </div>
 </div>
 
+<!-- MOBILE FILTER BAR (visible only on small screens) -->
+<div class="mobile-filters" id="mobileFilters">
+  <div class="fchip" id="mYearChip">
+    🎓 <select id="mYearSel" onchange="onMobileFilterChange()"><option value="">All Years</option></select>
+  </div>
+  <div class="fchip" id="mSectionChip">
+    🏷 <select id="mSectionSel" onchange="onMobileFilterChange()"><option value="">All Sections</option></select>
+  </div>
+  <button class="gm-btn" id="gmBtnMob" onclick="toggleGameMode()" style="flex-shrink:0">🎮</button>
+</div>
+<!-- MOBILE STAT ROW -->
+<div class="mobile-stat-row" id="mobileStatRow" style="display:none">
+  <div class="ts"><span class="d" style="background:var(--coral)"></span><span id="mts1">–</span> Left</div>
+  <div class="ts"><span class="d" style="background:var(--sage)"></span><span id="mts2">–</span> Done</div>
+  <div class="ts"><span class="d" style="background:var(--sky)"></span><span id="mts3">–</span> Topics</div>
+</div>
+
 <main>
 
 <!-- ══════ SPIN PAGE ══════ -->
@@ -800,7 +883,7 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
   <div id="spinSelectPrompt" class="select-prompt">
     <div class="sp-icon">🎡</div>
     <div class="sp-title">Select Year & Section</div>
-    <div class="sp-sub">Choose a year and section from the top bar to load students onto the wheel.</div>
+    <div class="sp-sub">Choose a year and section from the filters above to load students onto the wheel.</div>
   </div>
 
   <div id="spinContent" style="display:none">
@@ -1103,10 +1186,7 @@ async function boot() {
   try {
     await api("initSheets");
     const f = await api("getFilters");
-    populateSelect("yearSel", f.years, "All Years");
-    populateSelect("sectionSel", f.sections, "All Sections");
-    populateSelect("topicYearIn", f.years, "All Years");
-    populateSelect("topicSecIn", f.sections, "All Sections");
+    populateAllSelects(f.years, f.sections);
     await loadTopics();
     hideLoad();
     toast("✅ Connected to Google Sheets!", "success");
@@ -1134,6 +1214,28 @@ function populateSelect(id, arr, placeholder) {
   if (cur) sel.value = cur;
 }
 
+function populateAllSelects(years, sections) {
+  populateSelect("yearSel",    years,    "All Years");
+  populateSelect("sectionSel", sections, "All Sections");
+  populateSelect("topicYearIn",years,    "All Years");
+  populateSelect("topicSecIn", sections, "All Sections");
+  populateSelect("mYearSel",   years,    "All Years");
+  populateSelect("mSectionSel",sections, "All Sections");
+}
+
+/* Mobile filters sync to desktop and trigger same logic */
+function onMobileFilterChange() {
+  document.getElementById('yearSel').value    = document.getElementById('mYearSel').value;
+  document.getElementById('sectionSel').value = document.getElementById('mSectionSel').value;
+  onFilterChange();
+}
+
+/* Keep mobile selects in sync when desktop ones change */
+function syncMobileSelects() {
+  document.getElementById('mYearSel').value    = document.getElementById('yearSel').value;
+  document.getElementById('mSectionSel').value = document.getElementById('sectionSel').value;
+}
+
 /* ══════════════ FILTER CHANGE ══════════════ */
 async function onFilterChange() {
   currentYear    = document.getElementById('yearSel').value;
@@ -1141,15 +1243,22 @@ async function onFilterChange() {
 
   document.getElementById('yearChip').classList.toggle('active', !!currentYear);
   document.getElementById('sectionChip').classList.toggle('active', !!currentSection);
+  document.getElementById('mYearChip').classList.toggle('active', !!currentYear);
+  document.getElementById('mSectionChip').classList.toggle('active', !!currentSection);
+
+  // Keep mobile dropdowns in sync
+  syncMobileSelects();
 
   if (!currentYear && !currentSection) {
     document.getElementById('spinSelectPrompt').style.display = '';
     document.getElementById('spinContent').style.display = 'none';
+    document.getElementById('mobileStatRow').style.display = 'none';
     return;
   }
 
   document.getElementById('spinSelectPrompt').style.display = 'none';
   document.getElementById('spinContent').style.display = 'block';
+  document.getElementById('mobileStatRow').style.display = '';
 
   await loadStudents();
   await loadTopics();
@@ -1236,6 +1345,9 @@ function updateStats() {
   document.getElementById('ts1').textContent = rem;
   document.getElementById('ts2').textContent = dn;
   document.getElementById('ts3').textContent = activeTopics.length;
+  document.getElementById('mts1').textContent = rem;
+  document.getElementById('mts2').textContent = dn;
+  document.getElementById('mts3').textContent = activeTopics.length;
   document.getElementById('sc1').textContent = rem;
   document.getElementById('sc2').textContent = dn;
   document.getElementById('sc3').textContent = activeTopics.length;
@@ -1433,8 +1545,11 @@ function confirmPickFromWinner() {
 function toggleGameMode() {
   gameModeOn = !gameModeOn;
   document.body.classList.toggle('game-mode', gameModeOn);
-  const btn = document.getElementById('gmBtn');
-  btn.textContent = gameModeOn ? '🌙 Normal Mode' : '🎮 Game Mode';
+  const btn    = document.getElementById('gmBtn');
+  const btnMob = document.getElementById('gmBtnMob');
+  const label = gameModeOn ? '🌙 Normal Mode' : '🎮 Game Mode';
+  btn.textContent    = label;
+  btnMob.textContent = gameModeOn ? '🌙' : '🎮';
   if (gameModeOn) { initParticles(); toast('🎮 Game Mode ON!', 'info'); playChime(); }
   else { stopParticles(); toast('Normal mode restored', 'info'); }
   drawRollWheel(); drawTopicWheel();

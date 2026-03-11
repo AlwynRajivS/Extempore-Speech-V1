@@ -28,19 +28,17 @@
   --fn:'Plus Jakarta Sans',sans-serif;
   --fd:'Fraunces',serif;
   --fm:'JetBrains Mono',monospace;
-  --nav-h:64px;--bnav-h:62px
+  --nav-h:64px;--bnav-h:62px;
+  --timer-color:#1e9e5c;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fn);background:var(--bg);color:var(--ink);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-
-/* Mesh background */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(ellipse 700px 500px at 95% -5%,rgba(217,72,26,.08) 0%,transparent 55%),
     radial-gradient(ellipse 500px 400px at -5% 95%,rgba(26,95,180,.07) 0%,transparent 55%),
     radial-gradient(ellipse 400px 300px at 50% 40%,rgba(255,255,255,.5) 0%,transparent 60%)}
-
 .app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100dvh}
 
 /* ══════════════════════════════════════════════════
@@ -55,102 +53,37 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   box-shadow:0 2px 12px rgba(26,21,16,.06)
 }
 .brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.brand-icon{
-  width:40px;height:40px;border-radius:12px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--coral),var(--coral2));
-  display:grid;place-items:center;font-size:19px;
-  box-shadow:0 3px 10px rgba(217,72,26,.35)
-}
+.brand-icon{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--coral),var(--coral2));display:grid;place-items:center;font-size:19px;box-shadow:0 3px 10px rgba(217,72,26,.35)}
 .brand-text h1{font-family:var(--fd);font-size:1.1rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--ink)}
 .brand-text p{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-
 .topbar-mid{flex:1;display:flex;justify-content:center}
 .filter-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
-.fchip{
-  display:flex;align-items:center;gap:5px;
-  background:var(--surf2);border:1.5px solid var(--bdr);
-  border-radius:9px;padding:5px 10px;cursor:pointer;
-  font-size:.72rem;font-weight:700;color:var(--ink2);
-  transition:all .18s;white-space:nowrap
-}
+.fchip{display:flex;align-items:center;gap:5px;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:9px;padding:5px 10px;cursor:pointer;font-size:.72rem;font-weight:700;color:var(--ink2);transition:all .18s;white-space:nowrap}
 .fchip:hover{background:var(--bg2);border-color:var(--bdr2)}
 .fchip.active{background:var(--coral-l);border-color:var(--coral-m);color:var(--coral)}
-.fchip select{
-  background:none;border:none;outline:none;font-family:var(--fn);
-  font-size:.72rem;font-weight:700;color:inherit;cursor:pointer;
-  padding:0;max-width:80px
-}
-
+.fchip select{background:none;border:none;outline:none;font-family:var(--fn);font-size:.72rem;font-weight:700;color:inherit;cursor:pointer;padding:0;max-width:80px}
 .topbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.ts{
-  display:flex;align-items:center;gap:4px;
-  background:var(--surf2);border:1px solid var(--bdr);
-  border-radius:20px;padding:4px 9px;
-  font-size:.68rem;font-weight:700;color:var(--ink2)
-}
+.ts{display:flex;align-items:center;gap:4px;background:var(--surf2);border:1px solid var(--bdr);border-radius:20px;padding:4px 9px;font-size:.68rem;font-weight:700;color:var(--ink2)}
 .ts .d{width:6px;height:6px;border-radius:50%}
-
-/* Mobile topbar: hide stat badges, keep filters visible below bar */
-@media(max-width:500px){
-  .ts{display:none}
-  .topbar-mid{display:none}
-  .topbar{height:auto;padding:8px 12px;flex-wrap:wrap;gap:6px}
-  .brand{flex:1}
-  .topbar-right{flex-shrink:0}
-  .gm-btn{font-size:.62rem;padding:4px 8px}
-}
-
-/* Mobile filter bar — shown below topbar on small screens */
-.mobile-filters{
-  display:none;
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--bdr);
-  padding:8px 12px;gap:6px;
-  position:sticky;top:0;z-index:199;
-  box-shadow:0 2px 8px rgba(26,21,16,.05)
-}
-@media(max-width:500px){
-  .mobile-filters{display:flex;flex-wrap:wrap;align-items:center;top:var(--mob-topbar-h,54px)}
-  .mobile-filters .fchip{flex:1;min-width:0;justify-content:center}
-  .mobile-filters .fchip select{max-width:none;width:100%}
-  .mobile-stat-row{
-    display:flex;gap:5px;padding:6px 12px;
-    background:var(--bg);border-bottom:1px solid var(--bdr);
-    position:sticky;z-index:198
-  }
-  .mobile-stat-row .ts{display:flex;flex:1;justify-content:center;border-radius:8px;padding:5px 6px;font-size:.63rem}
-}
+/* Live clock */
+.live-clock{font-family:var(--fm);font-size:.72rem;font-weight:600;color:var(--ink3);background:var(--surf2);border:1px solid var(--bdr);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:5px}
+.live-clock::before{content:'🕐';font-size:.75rem}
+@media(max-width:600px){.live-clock{display:none}}
+@media(max-width:500px){.ts{display:none}.topbar-mid{display:none}.topbar{height:auto;padding:8px 12px;flex-wrap:wrap;gap:6px}.brand{flex:1}.topbar-right{flex-shrink:0}.gm-btn{font-size:.62rem;padding:4px 8px}}
+.mobile-filters{display:none;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:8px 12px;gap:6px;position:sticky;top:0;z-index:199;box-shadow:0 2px 8px rgba(26,21,16,.05)}
+@media(max-width:500px){.mobile-filters{display:flex;flex-wrap:wrap;align-items:center;top:var(--mob-topbar-h,54px)}.mobile-filters .fchip{flex:1;min-width:0;justify-content:center}.mobile-filters .fchip select{max-width:none;width:100%}.mobile-stat-row{display:flex;gap:5px;padding:6px 12px;background:var(--bg);border-bottom:1px solid var(--bdr);position:sticky;z-index:198}.mobile-stat-row .ts{display:flex;flex:1;justify-content:center;border-radius:8px;padding:5px 6px;font-size:.63rem}}
 
 /* ══════════════════════════════════════════════════
    BOTTOM NAV
 ══════════════════════════════════════════════════ */
-.bnav{
-  position:fixed;bottom:0;left:0;right:0;height:var(--bnav-h);
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-top:1px solid var(--bdr);
-  display:flex;z-index:200;
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  box-shadow:0 -3px 16px rgba(26,21,16,.06)
-}
-.bn{
-  flex:1;background:none;border:none;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  cursor:pointer;color:var(--muted);font-family:var(--fn);
-  font-size:.59rem;font-weight:700;letter-spacing:.04em;
-  transition:color .2s;position:relative;padding:0
-}
-.bn .ni{font-size:1.2rem;line-height:1;transition:transform .2s}
-.bn:hover .ni{transform:translateY(-2px)}
+.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--bnav-h);background:rgba(255,255,255,.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--bdr);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -3px 16px rgba(26,21,16,.06)}
+.bn{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--muted);font-family:var(--fn);font-size:.59rem;font-weight:700;letter-spacing:.04em;transition:color .2s;position:relative;padding:0}
+.bn .ni{font-size:1.2rem;line-height:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.bn:hover .ni{transform:translateY(-4px) scale(1.18)}
 .bn.active{color:var(--coral)}
-.bn.active .ni{transform:scale(1.18)}
-.bn-bar{
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:22px;height:3px;border-radius:3px 3px 0 0;
-  background:var(--coral);opacity:0;transition:opacity .2s
-}
-.bn.active .bn-bar{opacity:1}
+.bn.active .ni{transform:scale(1.22)}
+.bn-bar{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:22px;height:3px;border-radius:3px 3px 0 0;background:var(--coral);opacity:0;transition:opacity .2s,width .25s}
+.bn.active .bn-bar{opacity:1;width:28px}
 
 /* ══════════════════════════════════════════════════
    MAIN / PAGES
@@ -171,8 +104,6 @@ main{flex:1;padding:16px 14px calc(var(--bnav-h) + 16px);max-width:720px;margin:
 .card-sky::before{background:linear-gradient(90deg,var(--sky),var(--sky2))}
 .card-sage::before{background:linear-gradient(90deg,var(--sage),#2ec97a)}
 .card-amber::before{background:linear-gradient(90deg,var(--amber),#e89408)}
-
-/* Section label */
 .slbl{font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .flex-between{display:flex;align-items:center;justify-content:space-between}
 .flex-center{display:flex;align-items:center;justify-content:center}
@@ -180,19 +111,9 @@ main{flex:1;padding:16px 14px calc(var(--bnav-h) + 16px);max-width:720px;margin:
 /* ══════════════════════════════════════════════════
    LOADING SCREEN
 ══════════════════════════════════════════════════ */
-#loadScreen{
-  position:fixed;inset:0;background:var(--bg);z-index:999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  transition:opacity .4s ease
-}
+#loadScreen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s ease}
 #loadScreen.hide{opacity:0;pointer-events:none}
-.load-icon{
-  width:72px;height:72px;border-radius:20px;
-  background:linear-gradient(135deg,var(--coral),var(--coral2));
-  display:grid;place-items:center;font-size:34px;
-  box-shadow:0 8px 30px rgba(217,72,26,.35);
-  animation:loadPulse 1.5s ease-in-out infinite
-}
+.load-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--coral),var(--coral2));display:grid;place-items:center;font-size:34px;box-shadow:0 8px 30px rgba(217,72,26,.35);animation:loadPulse 1.5s ease-in-out infinite}
 @keyframes loadPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 .load-text{font-family:var(--fd);font-size:1.5rem;font-weight:800;color:var(--ink)}
 .load-sub{font-size:.8rem;color:var(--muted);font-weight:500}
@@ -203,11 +124,9 @@ main{flex:1;padding:16px 14px calc(var(--bnav-h) + 16px);max-width:720px;margin:
 /* ══════════════════════════════════════════════════
    SELECT PROMPT
 ══════════════════════════════════════════════════ */
-.select-prompt{
-  text-align:center;padding:48px 20px;
-  display:flex;flex-direction:column;align-items:center;gap:14px
-}
-.sp-icon{font-size:3rem}
+.select-prompt{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.sp-icon{font-size:3rem;animation:floatIco 3s ease-in-out infinite}
+@keyframes floatIco{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .sp-title{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:var(--ink)}
 .sp-sub{font-size:.88rem;color:var(--muted);max-width:300px;line-height:1.6}
 
@@ -216,19 +135,15 @@ main{flex:1;padding:16px 14px calc(var(--bnav-h) + 16px);max-width:720px;margin:
 ══════════════════════════════════════════════════ */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 @media(max-width:420px){.stats-row{grid-template-columns:repeat(2,1fr)}}
-.schip{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:14px;
-  padding:12px 8px 10px;text-align:center;box-shadow:var(--sh1);
-  position:relative;overflow:hidden;cursor:default
-}
+.schip{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:12px 8px 10px;text-align:center;box-shadow:var(--sh1);position:relative;overflow:hidden;cursor:default;transition:all .2s}
 .schip::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .s-coral::before{background:linear-gradient(90deg,var(--coral),var(--coral2))}
 .s-sky::before{background:linear-gradient(90deg,var(--sky),var(--sky2))}
 .s-sage::before{background:linear-gradient(90deg,var(--sage),#2ec97a)}
 .s-amber::before{background:linear-gradient(90deg,var(--amber),#e89408)}
+.schip:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
 .schip .num{font-family:var(--fm);font-size:1.5rem;font-weight:600;line-height:1;display:block}
-.s-coral .num{color:var(--coral)}.s-sky .num{color:var(--sky)}
-.s-sage .num{color:var(--sage)}.s-amber .num{color:var(--amber)}
+.s-coral .num{color:var(--coral)}.s-sky .num{color:var(--sky)}.s-sage .num{color:var(--sage)}.s-amber .num{color:var(--amber)}
 .schip .lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px;display:block}
 
 /* ══════════════════════════════════════════════════
@@ -244,108 +159,48 @@ main{flex:1;padding:16px 14px calc(var(--bnav-h) + 16px);max-width:720px;margin:
 /* ══════════════════════════════════════════════════
    WHEEL CARDS
 ══════════════════════════════════════════════════ */
-.wheel-card{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:24px;
-  box-shadow:var(--sh2);padding:18px 14px 16px;
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  margin-bottom:12px;position:relative;overflow:hidden
-}
+.wheel-card{background:var(--surf);border:1px solid var(--bdr);border-radius:24px;box-shadow:var(--sh2);padding:18px 14px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:12px;position:relative;overflow:hidden}
 .wheel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0}
 .roll-card::before{background:linear-gradient(90deg,var(--coral),var(--coral2))}
 .topic-card::before{background:linear-gradient(90deg,var(--sky),var(--sky2))}
-
 .wtag{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
 .roll-card .wtag{background:var(--coral-l);color:var(--coral)}
 .topic-card .wtag{background:var(--sky-l);color:var(--sky)}
-
 .wptr-wrap{position:relative;display:flex;justify-content:center;align-items:center;padding-top:10px}
-.wptr{
-  position:absolute;top:-2px;left:50%;transform:translateX(-50%);
-  width:0;height:0;
-  border-left:10px solid transparent;border-right:10px solid transparent;
-  border-top:18px solid var(--coral);
-  filter:drop-shadow(0 2px 5px rgba(217,72,26,.5));z-index:10
-}
+.wptr{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:18px solid var(--coral);filter:drop-shadow(0 2px 5px rgba(217,72,26,.5));z-index:10}
 .topic-card .wptr{border-top-color:var(--sky);filter:drop-shadow(0 2px 5px rgba(26,95,180,.5))}
-
 canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--surf),0 0 0 6px var(--bdr)}
-
 .wfoot{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
 .wcnt{font-family:var(--fm);font-size:.69rem;color:var(--muted);background:var(--bg2);padding:3px 10px;border-radius:20px}
 
 /* ══════════════════════════════════════════════════
    BUTTONS
 ══════════════════════════════════════════════════ */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  border:none;border-radius:12px;font-family:var(--fn);font-weight:700;
-  cursor:pointer;transition:all .17s cubic-bezier(.4,0,.2,1);
-  white-space:nowrap;letter-spacing:.01em;text-align:center;
-  -webkit-tap-highlight-color:transparent
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:12px;font-family:var(--fn);font-weight:700;cursor:pointer;transition:all .17s cubic-bezier(.4,0,.2,1);white-space:nowrap;letter-spacing:.01em;text-align:center;-webkit-tap-highlight-color:transparent}
 .btn:active:not(:disabled){transform:scale(.96)}
 .btn:disabled{opacity:.35;cursor:not-allowed!important;transform:none!important;box-shadow:none!important}
-
-.btn-coral{
-  background:linear-gradient(135deg,var(--coral),var(--coral2));color:#fff;
-  font-size:.88rem;padding:12px 18px;width:100%;
-  box-shadow:0 4px 16px rgba(217,72,26,.3)
-}
+.btn-coral{background:linear-gradient(135deg,var(--coral),var(--coral2));color:#fff;font-size:.88rem;padding:12px 18px;width:100%;box-shadow:0 4px 16px rgba(217,72,26,.3)}
 .btn-coral:hover:not(:disabled){box-shadow:0 6px 22px rgba(217,72,26,.45);transform:translateY(-1px)}
-.btn-sky{
-  background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;
-  font-size:.88rem;padding:12px 18px;width:100%;
-  box-shadow:0 4px 16px rgba(26,95,180,.28)
-}
+.btn-sky{background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;font-size:.88rem;padding:12px 18px;width:100%;box-shadow:0 4px 16px rgba(26,95,180,.28)}
 .btn-sky:hover:not(:disabled){box-shadow:0 6px 22px rgba(26,95,180,.4);transform:translateY(-1px)}
-.btn-both{
-  background:linear-gradient(120deg,var(--coral) 0%,#c2185b 50%,var(--sky) 100%);
-  color:#fff;font-size:.95rem;padding:14px 20px;width:100%;border-radius:16px;
-  box-shadow:0 6px 24px rgba(194,24,91,.28);letter-spacing:.03em
-}
+.btn-both{background:linear-gradient(120deg,var(--coral) 0%,#c2185b 50%,var(--sky) 100%);color:#fff;font-size:.95rem;padding:14px 20px;width:100%;border-radius:16px;box-shadow:0 6px 24px rgba(194,24,91,.28);letter-spacing:.03em}
 .btn-both:hover:not(:disabled){box-shadow:0 8px 32px rgba(194,24,91,.4);transform:translateY(-2px)}
-.btn-sage{
-  background:linear-gradient(135deg,var(--sage),#2ec97a);color:#fff;
-  font-size:.85rem;padding:11px 18px;border-radius:12px;
-  box-shadow:0 4px 14px rgba(30,158,92,.3)
-}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#2ec97a);color:#fff;font-size:.85rem;padding:11px 18px;border-radius:12px;box-shadow:0 4px 14px rgba(30,158,92,.3)}
 .btn-sage:hover{box-shadow:0 6px 20px rgba(30,158,92,.42);transform:translateY(-1px)}
-.btn-amber{
-  background:linear-gradient(135deg,var(--amber),#e89408);color:#fff;
-  font-size:.82rem;padding:9px 16px;border-radius:10px;
-  box-shadow:0 3px 10px rgba(196,116,8,.28)
-}
+.btn-amber{background:linear-gradient(135deg,var(--amber),#e89408);color:#fff;font-size:.82rem;padding:9px 16px;border-radius:10px;box-shadow:0 3px 10px rgba(196,116,8,.28)}
 .btn-amber:hover{box-shadow:0 5px 16px rgba(196,116,8,.4);transform:translateY(-1px)}
-.btn-ghost{
-  background:transparent;border:1.5px solid var(--bdr2);
-  color:var(--ink2);font-size:.78rem;padding:8px 14px;border-radius:10px
-}
+.btn-ghost{background:transparent;border:1.5px solid var(--bdr2);color:var(--ink2);font-size:.78rem;padding:8px 14px;border-radius:10px}
 .btn-ghost:hover{background:var(--bg2);border-color:var(--ink3)}
-.btn-sm{
-  background:var(--surf2);border:1px solid var(--bdr);
-  color:var(--ink2);font-size:.73rem;font-weight:700;padding:6px 12px;border-radius:9px
-}
+.btn-sm{background:var(--surf2);border:1px solid var(--bdr);color:var(--ink2);font-size:.73rem;font-weight:700;padding:6px 12px;border-radius:9px}
 .btn-sm:hover{background:var(--bg2)}
-.btn-danger{
-  background:transparent;border:1px solid var(--coral-m);
-  color:var(--coral);font-size:.73rem;font-weight:700;padding:6px 12px;border-radius:9px
-}
+.btn-danger{background:transparent;border:1px solid var(--coral-m);color:var(--coral);font-size:.73rem;font-weight:700;padding:6px 12px;border-radius:9px}
 .btn-danger:hover{background:var(--coral-l)}
 
 /* ══════════════════════════════════════════════════
    RESULT CARD
 ══════════════════════════════════════════════════ */
-.result-card{
-  background:var(--surf);border:1.5px solid var(--bdr);border-radius:20px;
-  padding:14px 16px;box-shadow:var(--sh1);margin-bottom:12px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;min-height:64px;
-  transition:border-color .3s,box-shadow .3s
-}
-.result-card.live{
-  border-color:var(--sage-m);
-  box-shadow:0 0 0 3px rgba(30,158,92,.1),var(--sh2)
-}
+.result-card{background:var(--surf);border:1.5px solid var(--bdr);border-radius:20px;padding:14px 16px;box-shadow:var(--sh1);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;min-height:64px;transition:border-color .3s,box-shadow .3s}
+.result-card.live{border-color:var(--sage-m);box-shadow:0 0 0 3px rgba(30,158,92,.1),var(--sh2)}
 .rpicks{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rpick{display:flex;align-items:center;gap:7px}
 .rlbl{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:20px}
@@ -357,61 +212,97 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
 /* ══════════════════════════════════════════════════
    COMMENT PANEL
 ══════════════════════════════════════════════════ */
-.comment-panel{
-  background:var(--amber-l);border:1.5px solid var(--amber-m);
-  border-radius:16px;padding:14px 16px;margin-bottom:12px;display:none
-}
+.comment-panel{background:var(--amber-l);border:1.5px solid var(--amber-m);border-radius:16px;padding:14px 16px;margin-bottom:12px;display:none}
 .comment-panel.open{display:block}
 .cp-title{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
 .cp-student{font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:8px}
 .cp-row{display:flex;gap:8px}
-.cp-input{
-  flex:1;background:var(--surf);border:1.5px solid var(--bdr);border-radius:10px;
-  padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.84rem;
-  outline:none;resize:none;height:72px;transition:border-color .2s
-}
+.cp-input{flex:1;background:var(--surf);border:1.5px solid var(--bdr);border-radius:10px;padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.84rem;outline:none;resize:none;height:72px;transition:border-color .2s}
 .cp-input:focus{border-color:var(--amber)}
 .cp-input::placeholder{color:var(--muted)}
 
 /* ══════════════════════════════════════════════════
-   TIMER
+   TIMER — INLINE
 ══════════════════════════════════════════════════ */
-.timer-card{
-  background:var(--surf);border:1px solid var(--bdr);
-  border-radius:18px;box-shadow:var(--sh1);margin-bottom:12px;
-  overflow:hidden;display:none
-}
+.timer-card{background:var(--surf);border:1px solid var(--bdr);border-radius:18px;box-shadow:var(--sh1);margin-bottom:12px;overflow:hidden;display:none}
 .timer-card.open{display:block}
-.timer-head{
-  padding:11px 16px;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--bdr);
-  background:var(--surf2);cursor:pointer
-}
-.timer-head h3{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
 .timer-body{padding:14px 16px 16px}
 .tpresets{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
-.tpre{
-  background:var(--surf2);border:1.5px solid var(--bdr);
-  color:var(--ink2);font-family:var(--fm);font-size:.76rem;font-weight:600;
-  padding:6px 12px;border-radius:9px;cursor:pointer;transition:all .15s
-}
+.tpre{background:var(--surf2);border:1.5px solid var(--bdr);color:var(--ink2);font-family:var(--fm);font-size:.76rem;font-weight:600;padding:6px 12px;border-radius:9px;cursor:pointer;transition:all .15s}
 .tpre:hover,.tpre.on{background:var(--sky-l);border-color:var(--sky-m);color:var(--sky)}
-.tdisplay{
-  font-family:var(--fm);font-size:3rem;font-weight:600;
-  text-align:center;color:var(--ink);letter-spacing:.04em;
-  margin:4px 0 12px;transition:color .3s
-}
+.tdisplay{font-family:var(--fm);font-size:3rem;font-weight:600;text-align:center;color:var(--ink);letter-spacing:.04em;margin:4px 0 12px;transition:color .3s}
 .tdisplay.warn{color:var(--coral);animation:tp .7s infinite}
 .tdisplay.done{color:var(--sage)}
 @keyframes tp{0%,100%{opacity:1}50%{opacity:.35}}
 .tbtns{display:flex;gap:7px;justify-content:center}
-.tbtn{
-  flex:1;max-width:100px;padding:9px;border-radius:10px;border:none;
-  font-family:var(--fn);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s
-}
+.tbtn{flex:1;max-width:100px;padding:9px;border-radius:10px;border:none;font-family:var(--fn);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
 .tb-start{background:linear-gradient(135deg,var(--sage),#2ec97a);color:#fff;box-shadow:0 3px 10px rgba(30,158,92,.3)}
 .tb-pause{background:var(--amber-l);color:var(--amber);border:1.5px solid var(--amber-m)}
 .tb-reset{background:var(--bg2);color:var(--ink2);border:1.5px solid var(--bdr2)}
+/* Fullscreen timer button */
+.tb-fullscreen{background:var(--violet-l);color:var(--violet);border:1.5px solid rgba(94,53,177,.3);max-width:36px;font-size:1rem;padding:9px 0}
+.tb-fullscreen:hover{background:var(--violet);color:#fff}
+
+/* ══════════════════════════════════════════════════
+   🆕 FULLSCREEN TIMER OVERLAY
+══════════════════════════════════════════════════ */
+#fsTimerOverlay{
+  position:fixed;inset:0;z-index:5000;
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  background:rgba(8,8,20,.97);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  cursor:pointer;
+}
+#fsTimerOverlay.show{display:flex;animation:fsIn .35s ease}
+@keyframes fsIn{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1;backdrop-filter:blur(30px)}}
+
+.fs-title{font-size:.75rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
+.fs-student-info{font-family:var(--fm);font-size:1rem;color:rgba(255,255,255,.7);text-align:center;background:rgba(255,255,255,.08);padding:8px 24px;border-radius:30px;max-width:380px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Circular SVG timer */
+.fs-ring-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.fs-ring{transform:rotate(-90deg)}
+.fs-ring-track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:10}
+.fs-ring-fill{fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:880;stroke-dashoffset:0;transition:stroke-dashoffset .5s linear,stroke .5s ease}
+/* Color stages */
+.fs-ring-fill.stage-ok{stroke:#40c057}
+.fs-ring-fill.stage-warn{stroke:#f59f00}
+.fs-ring-fill.stage-danger{stroke:#ff6348;animation:pulseDanger .6s ease-in-out infinite}
+@keyframes pulseDanger{0%,100%{opacity:1}50%{opacity:.5}}
+.fs-ring-fill.done{stroke:#20c997}
+
+.fs-time-center{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px}
+.fs-time{font-family:var(--fm);font-size:clamp(3rem,12vw,5.5rem);font-weight:600;color:#fff;letter-spacing:.04em;transition:color .5s;line-height:1}
+.fs-time.warn{color:#f59f00}
+.fs-time.danger{color:#ff6348;animation:tp .6s infinite}
+.fs-time.done-txt{color:#20c997}
+.fs-status{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+
+.fs-controls{display:flex;gap:14px;align-items:center}
+.fs-btn{width:60px;height:60px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(10px)}
+.fs-btn:hover{background:rgba(255,255,255,.18);transform:scale(1.1)}
+.fs-btn.primary{width:72px;height:72px;font-size:1.7rem;border-color:rgba(64,192,87,.5);background:rgba(64,192,87,.15)}
+.fs-btn.primary:hover{background:rgba(64,192,87,.35)}
+.fs-btn.danger-btn{border-color:rgba(255,99,72,.4);background:rgba(255,99,72,.12)}
+.fs-btn.danger-btn:hover{background:rgba(255,99,72,.3)}
+
+.fs-hint{font-size:.68rem;color:rgba(255,255,255,.25);text-align:center;letter-spacing:.08em}
+
+/* Time's up overlay inside FS */
+.fs-timesup{
+  position:absolute;inset:0;background:rgba(30,158,92,.12);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  animation:timesUp .5s ease;pointer-events:none
+}
+.fs-timesup.show{display:flex}
+@keyframes timesUp{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.fs-timesup-icon{font-size:5rem;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.fs-timesup-text{font-family:var(--fd);font-size:clamp(2.5rem,8vw,4rem);font-weight:800;color:#fff;text-shadow:0 0 40px rgba(64,192,87,.8)}
+.fs-timesup-sub{font-size:.9rem;color:rgba(255,255,255,.7)}
+
+/* Particle effect behind FS timer */
+.fs-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 
 /* ══════════════════════════════════════════════════
    TOPICS PAGE
@@ -421,33 +312,18 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
 .tc-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;color:var(--ink)}
 .add-topic-form{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .form-row{display:flex;gap:8px;flex-wrap:wrap}
-.finput{
-  flex:1;min-width:140px;background:var(--surf2);border:1.5px solid var(--bdr);
-  border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);
-  font-size:.84rem;outline:none;transition:border-color .2s
-}
+.finput{flex:1;min-width:140px;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.84rem;outline:none;transition:border-color .2s}
 .finput:focus{border-color:var(--coral)}
 .finput::placeholder{color:var(--muted)}
-.fselect{
-  flex:1;min-width:100px;background:var(--surf2);border:1.5px solid var(--bdr);
-  border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);
-  font-size:.84rem;outline:none;cursor:pointer;transition:border-color .2s
-}
+.fselect{flex:1;min-width:100px;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.84rem;outline:none;cursor:pointer;transition:border-color .2s}
 .fselect:focus{border-color:var(--coral)}
-
 .topic-list{display:flex;flex-direction:column;gap:7px}
-.topic-item{
-  display:flex;align-items:center;gap:10px;
-  background:var(--surf2);border:1px solid var(--bdr);
-  border-radius:12px;padding:10px 14px
-}
+.topic-item{display:flex;align-items:center;gap:10px;background:var(--surf2);border:1px solid var(--bdr);border-radius:12px;padding:10px 14px;transition:transform .15s}
+.topic-item:hover{transform:translateX(3px)}
 .tn{font-family:var(--fm);font-size:.72rem;color:var(--muted);min-width:26px}
 .tname{flex:1;font-size:.85rem;font-weight:600;color:var(--ink)}
 .tmeta{display:flex;gap:5px}
-.ttag{
-  font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:3px 8px;border-radius:20px;background:var(--bg2);color:var(--muted)
-}
+.ttag{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:var(--bg2);color:var(--muted)}
 .ttag.used{background:var(--sage-l);color:var(--sage)}
 .ttag.date{background:var(--sky-l);color:var(--sky)}
 .no-topics{text-align:center;padding:32px;color:var(--muted);font-size:.88rem}
@@ -456,73 +332,60 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
    STUDENTS PAGE
 ══════════════════════════════════════════════════ */
 .stbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.sinput{
-  flex:1;min-width:170px;background:var(--surf);border:1.5px solid var(--bdr);
-  border-radius:12px;padding:10px 14px 10px 36px;color:var(--ink);
-  font-family:var(--fn);font-size:.84rem;outline:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a89e92' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:12px center;
-  box-shadow:var(--sh1);transition:border-color .2s
-}
+.sinput{flex:1;min-width:170px;background:var(--surf);border:1.5px solid var(--bdr);border-radius:12px;padding:10px 14px 10px 36px;color:var(--ink);font-family:var(--fn);font-size:.84rem;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a89e92' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center;box-shadow:var(--sh1);transition:border-color .2s}
 .sinput:focus{border-color:var(--coral)}
 .sinput::placeholder{color:var(--muted)}
 .tabs{display:flex;gap:3px;background:var(--bg2);border-radius:10px;padding:3px}
-.tab{
-  background:none;border:none;font-family:var(--fn);font-size:.74rem;font-weight:700;
-  padding:6px 12px;border-radius:7px;cursor:pointer;color:var(--muted);transition:all .18s
-}
+.tab{background:none;border:none;font-family:var(--fn);font-size:.74rem;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;color:var(--muted);transition:all .18s}
 .tab.active{background:var(--surf);color:var(--ink);box-shadow:var(--sh1)}
-
 .students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
-.sc{
-  background:var(--surf);border:1.5px solid var(--bdr);border-radius:14px;
-  padding:11px 10px 9px;display:flex;flex-direction:column;gap:6px;
-  box-shadow:var(--sh1);transition:all .18s;position:relative
-}
+.sc{background:var(--surf);border:1.5px solid var(--bdr);border-radius:14px;padding:11px 10px 9px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--sh1);transition:all .18s;position:relative}
 .sc:hover{border-color:var(--coral-m);transform:translateY(-1px);box-shadow:var(--sh2)}
 .sc.completed{background:var(--sage-l);border-color:var(--sage-m)}
 .sc.completed .srn{color:var(--sage)}
 .sc-sno{font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:.06em}
 .srn{font-family:var(--fm);font-size:.8rem;font-weight:600;color:var(--ink)}
 .sname{font-size:.72rem;font-weight:600;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sstatus{
-  font-size:.59rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:2px 7px;border-radius:20px;align-self:flex-start
-}
+.sstatus{font-size:.59rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:20px;align-self:flex-start}
 .sstatus.done{background:var(--sage-l);color:var(--sage)}
 .sstatus.pending{background:var(--coral-l);color:var(--coral)}
 .sc-date{font-family:var(--fm);font-size:.6rem;color:var(--muted)}
 .scact{display:flex;gap:4px;margin-top:2px}
-.scbtn{
-  flex:1;background:none;border:1px solid var(--bdr);color:var(--muted);
-  font-size:.65rem;font-weight:700;padding:4px 5px;border-radius:7px;
-  cursor:pointer;transition:all .15s;font-family:var(--fn)
-}
+.scbtn{flex:1;background:none;border:1px solid var(--bdr);color:var(--muted);font-size:.65rem;font-weight:700;padding:4px 5px;border-radius:7px;cursor:pointer;transition:all .15s;font-family:var(--fn)}
 .scbtn.done-btn:hover{border-color:var(--sage-m);color:var(--sage);background:var(--sage-l)}
 .scbtn.edit-btn:hover{border-color:var(--sky-m);color:var(--sky);background:var(--sky-l)}
+.scbtn.undo-btn:hover{border-color:var(--coral-m);color:var(--coral);background:var(--coral-l)}
 .empty-st{grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-size:.88rem}
-
 .add-student-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+
+/* 🆕 STATUS TOGGLE SWITCH */
+.status-toggle-wrap{display:flex;align-items:center;gap:7px;margin-top:2px}
+.status-toggle-lbl{font-size:.6rem;font-weight:700;color:var(--muted)}
+.status-toggle{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0}
+.status-toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;border-radius:20px;background:var(--coral-m);transition:background .25s}
+.toggle-slider::before{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.status-toggle input:checked + .toggle-slider{background:var(--sage)}
+.status-toggle input:checked + .toggle-slider::before{transform:translateX(16px)}
+/* Sort bar */
+.sort-bar{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.sort-lbl{font-size:.65rem;font-weight:700;color:var(--muted)}
+.sort-btn{font-size:.62rem;font-weight:700;padding:3px 8px;border:1px solid var(--bdr);border-radius:6px;background:var(--surf2);color:var(--ink2);cursor:pointer;transition:all .15s}
+.sort-btn.active{background:var(--sky-l);border-color:var(--sky-m);color:var(--sky)}
+/* Bulk action bar */
+.bulk-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:8px 12px;margin-bottom:10px;box-shadow:var(--sh1)}
+.bulk-lbl{font-size:.65rem;font-weight:700;color:var(--muted)}
 
 /* ══════════════════════════════════════════════════
    HISTORY PAGE
 ══════════════════════════════════════════════════ */
 .hist-list{display:flex;flex-direction:column;gap:8px}
-.hitem{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:14px;
-  padding:12px 15px;box-shadow:var(--sh1);
-  display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:start
-}
+.hitem{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:12px 15px;box-shadow:var(--sh1);display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:start;transition:transform .15s}
+.hitem:hover{transform:translateX(3px)}
 .hnum{font-family:var(--fm);font-size:.66rem;color:var(--muted);padding-top:2px}
-.hmain{}
 .hroll{font-family:var(--fm);font-size:.88rem;font-weight:600;color:var(--coral)}
 .hname{font-size:.78rem;color:var(--ink2);margin-top:1px}
-.htopic{
-  font-family:var(--fm);font-size:.76rem;
-  background:var(--sky-l);border:1px solid var(--sky-m);
-  color:var(--sky);padding:2px 8px;border-radius:20px;
-  display:inline-block;margin-top:4px
-}
+.htopic{font-family:var(--fm);font-size:.76rem;background:var(--sky-l);border:1px solid var(--sky-m);color:var(--sky);padding:2px 8px;border-radius:20px;display:inline-block;margin-top:4px}
 .hcomment{font-size:.74rem;color:var(--muted);font-style:italic;margin-top:4px}
 .hright{text-align:right}
 .hdate{font-family:var(--fm);font-size:.68rem;color:var(--muted)}
@@ -553,46 +416,20 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
 /* ══════════════════════════════════════════════════
    MODAL
 ══════════════════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(26,21,16,.45);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:500;display:none;place-items:center;padding:20px;
-  animation:overlayIn .2s ease
-}
+.modal-overlay{position:fixed;inset:0;background:rgba(26,21,16,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:500;display:none;place-items:center;padding:20px;animation:overlayIn .2s ease}
 .modal-overlay.open{display:grid}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
-.modal{
-  background:var(--surf);border-radius:24px;box-shadow:var(--sh4);
-  max-width:460px;width:100%;max-height:90dvh;overflow-y:auto;
-  animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)
-}
+.modal{background:var(--surf);border-radius:24px;box-shadow:var(--sh4);max-width:460px;width:100%;max-height:90dvh;overflow-y:auto;animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)}
 @keyframes modalIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-.mhead{
-  padding:18px 20px 14px;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--bdr);
-  position:sticky;top:0;background:var(--surf);border-radius:24px 24px 0 0;z-index:2
-}
+.mhead{padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--surf);border-radius:24px 24px 0 0;z-index:2}
 .mhead h2{font-family:var(--fd);font-size:1.2rem;font-weight:800;color:var(--ink)}
-.mclose{
-  width:30px;height:30px;border-radius:8px;border:1px solid var(--bdr);
-  background:var(--surf2);cursor:pointer;font-size:.95rem;
-  display:grid;place-items:center;color:var(--muted);transition:all .15s
-}
+.mclose{width:30px;height:30px;border-radius:8px;border:1px solid var(--bdr);background:var(--surf2);cursor:pointer;font-size:.95rem;display:grid;place-items:center;color:var(--muted);transition:all .15s}
 .mclose:hover{background:var(--bg2)}
 .mbody{padding:18px 20px 20px;display:flex;flex-direction:column;gap:12px}
 .mlbl{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.minput{
-  width:100%;background:var(--surf2);border:1.5px solid var(--bdr);
-  border-radius:11px;padding:10px 14px;color:var(--ink);
-  font-family:var(--fn);font-size:.88rem;outline:none;transition:border-color .2s
-}
+.minput{width:100%;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.88rem;outline:none;transition:border-color .2s}
 .minput:focus{border-color:var(--coral)}
-.mtextarea{
-  width:100%;background:var(--surf2);border:1.5px solid var(--bdr);
-  border-radius:11px;padding:10px 14px;color:var(--ink);
-  font-family:var(--fn);font-size:.84rem;outline:none;
-  resize:vertical;min-height:80px;transition:border-color .2s
-}
+.mtextarea{width:100%;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:10px 14px;color:var(--ink);font-family:var(--fn);font-size:.84rem;outline:none;resize:vertical;min-height:80px;transition:border-color .2s}
 .mtextarea:focus{border-color:var(--amber)}
 .mactions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 
@@ -602,162 +439,44 @@ canvas{display:block;border-radius:50%;box-shadow:var(--sh3),0 0 0 5px var(--sur
 #cfx{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
 .cp{position:absolute;opacity:0;animation:cpf linear forwards}
 @keyframes cpf{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110dvh) rotate(800deg);opacity:0}}
-.toast-wrap{
-  position:fixed;bottom:calc(var(--bnav-h) + 12px);left:50%;
-  transform:translateX(-50%) translateY(16px);
-  z-index:9998;pointer-events:none;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  width:calc(100% - 32px);max-width:360px
-}
-.toast{
-  background:var(--ink);color:#fff;border-radius:12px;
-  padding:11px 18px;font-size:.82rem;font-weight:600;
-  box-shadow:var(--sh3);opacity:0;transform:translateY(10px);
-  transition:all .28s ease;white-space:nowrap;width:auto
-}
+.toast-wrap{position:fixed;bottom:calc(var(--bnav-h) + 12px);left:50%;transform:translateX(-50%) translateY(16px);z-index:9998;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:calc(100% - 32px);max-width:360px}
+.toast{background:var(--ink);color:#fff;border-radius:12px;padding:11px 18px;font-size:.82rem;font-weight:600;box-shadow:var(--sh3);opacity:0;transform:translateY(10px);transition:all .28s ease;white-space:nowrap;width:auto}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.success{background:var(--sage)}
 .toast.error{background:var(--coral)}
 .toast.info{background:var(--sky)}
-
-/* ══════════════════════════════════════════════════
-   SPINNER
-══════════════════════════════════════════════════ */
-.spinner{
-  display:inline-block;width:18px;height:18px;
-  border:2.5px solid rgba(255,255,255,.35);
-  border-top-color:#fff;border-radius:50%;
-  animation:spin .7s linear infinite
-}
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Faculty badge */
 .fac-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .fac-lbl{font-size:.72rem;font-weight:700;color:var(--muted)}
 .fac-val{font-size:.8rem;font-weight:700;color:var(--violet);background:var(--violet-l);padding:3px 10px;border-radius:20px;cursor:pointer}
-
-/* Divider */
 .divider{height:1px;background:var(--bdr);margin:12px 0}
 
+/* Keyboard shortcut badge */
+.kbd-hint{background:var(--bg2);border:1px solid var(--bdr2);border-radius:5px;font-family:var(--fm);font-size:.62rem;font-weight:600;padding:1px 5px;color:var(--muted)}
+.shortcuts-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.shortcut-chip{display:flex;align-items:center;gap:5px;font-size:.67rem;color:var(--muted)}
+
 /* ══════════════════════════════════════════════════
-   RESPONSIVE
+   STREAK BANNER
 ══════════════════════════════════════════════════ */
-@media(max-width:520px){
-  main{padding:12px 11px calc(var(--bnav-h) + 14px)}
-  canvas{width:255px!important;height:255px!important}
-  .stats-row{gap:6px}
-  .schip .num{font-size:1.3rem}
-  .students-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
-  /* Students page */
-  .stbar{flex-direction:column;gap:6px}
-  .sinput{min-width:unset;width:100%}
-  .tabs{width:100%}
-  .tab{flex:1;text-align:center}
-  .add-student-row{flex-direction:column}
-  .add-student-row .finput{max-width:100%!important}
-  /* Topics page */
-  .form-row{flex-direction:column}
-  .fselect,.finput{min-width:unset;width:100%}
-  /* Wheels */
-  .wheel-card{padding:14px 10px 12px}
-  .wfoot{flex-wrap:wrap;justify-content:center}
-  .btn-both{font-size:.82rem;padding:12px 14px}
-  /* Result card */
-  .result-card{flex-direction:column;align-items:flex-start}
-  /* Comment panel */
-  .cp-row{flex-direction:column}
-  /* Modal */
-  .mactions{flex-direction:column;width:100%}
-  .mactions .btn{width:100%}
-  /* Report */
-  .report-opts{grid-template-columns:1fr}
-  /* Analytics */
-  .aw-big{font-size:1.5rem}
-  /* History */
-  .hitem{grid-template-columns:auto 1fr}
-  .hright{display:none}
-  /* Timer */
-  .tpresets{gap:4px}
-  .tpre{padding:5px 9px;font-size:.7rem}
-  .tdisplay{font-size:2.4rem}
-}
-@media(max-width:360px){
-  canvas{width:215px!important;height:215px!important}
-  .students-grid{grid-template-columns:repeat(2,1fr)}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .an-grid{grid-template-columns:1fr}
-  .schip .num{font-size:1.1rem}
-}
-
-/* ════════════════════ GAME MODE ════════════════════ */
-body.game-mode{
-  --bg:#080814;--bg2:#0d0d1f;--bg3:#121228;
-  --surf:#10102a;--surf2:#14143a;--surf3:#18184a;
-  --bdr:#252558;--bdr2:#353580;
-  --ink:#e0d8ff;--ink2:#aeaade;--ink3:#7878b8;--muted:#484880}
-body.game-mode::before{background:
-  radial-gradient(ellipse 800px 600px at 90% 0%,rgba(217,72,26,.2) 0%,transparent 55%),
-  radial-gradient(ellipse 600px 500px at 5% 100%,rgba(26,95,180,.18) 0%,transparent 55%),
-  radial-gradient(ellipse 500px 400px at 50% 50%,rgba(94,53,177,.14) 0%,transparent 60%)}
-body.game-mode .topbar{background:rgba(8,8,20,.94);border-color:#252558}
-body.game-mode .bnav{background:rgba(8,8,20,.97);border-color:#252558}
-body.game-mode .wheel-card{background:var(--surf);border-color:#252558;box-shadow:0 0 50px rgba(26,95,180,.18)}
-body.game-mode canvas{box-shadow:0 0 35px rgba(217,72,26,.5),0 0 70px rgba(217,72,26,.18),0 0 0 5px var(--surf),0 0 0 6px #3535a0}
-body.game-mode .topic-card canvas{box-shadow:0 0 35px rgba(26,95,180,.55),0 0 70px rgba(26,95,180,.2),0 0 0 5px var(--surf),0 0 0 6px #2a2a7a}
-body.game-mode .result-card.live{border-color:#40c057;box-shadow:0 0 30px rgba(64,192,87,.25)}
-body.game-mode .btn-both{animation:btnGlow 2s ease-in-out infinite}
-body.game-mode .prog-fill{background:linear-gradient(90deg,#ff6b6b,#cc5de8,#339af0);filter:brightness(1.2)}
-body.game-mode .schip{background:var(--surf2);border-color:#252558}
-@keyframes btnGlow{0%,100%{box-shadow:0 6px 24px rgba(194,24,91,.4)}50%{box-shadow:0 6px 50px rgba(194,24,91,.9),0 0 80px rgba(194,24,91,.3)}}
-
-/* ── PARTICLE CANVAS ── */
-#particleCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .7s}
-body.game-mode #particleCanvas{opacity:1}
-
-/* ── GAME MODE BUTTON ── */
-.gm-btn{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:5px 11px;font-size:.7rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:var(--fn);letter-spacing:.03em}
-.gm-btn:hover{border-color:#7950f2;color:#7950f2;background:var(--violet-l)}
-body.game-mode .gm-btn{background:#1a1a40;border-color:#7950f2;color:#b197fc}
-
-/* ── SHAKE ANIMATION ── */
-@keyframes wheelShake{0%,100%{transform:rotate(0)}20%{transform:rotate(-2.5deg)}40%{transform:rotate(2.5deg)}60%{transform:rotate(-1.5deg)}80%{transform:rotate(1deg)}}
-canvas.shake{animation:wheelShake .45s ease-in-out}
-
-/* ── COUNTDOWN OVERLAY ── */
-.gm-countdown{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;display:none;place-items:center}
-.gm-countdown.show{display:grid}
-.gm-count-num{font-family:var(--fd);font-size:clamp(6rem,20vw,12rem);font-weight:800;color:#fff;text-shadow:0 0 60px rgba(217,72,26,.8),0 0 120px rgba(217,72,26,.4);animation:countPop .65s cubic-bezier(.34,1.56,.64,1)}
-@keyframes countPop{from{transform:scale(2.8);opacity:0}to{transform:scale(1);opacity:1}}
-.gm-count-go{font-family:var(--fd);font-size:clamp(4rem,14vw,8rem);font-weight:800;color:#51cf66;text-shadow:0 0 60px #51cf66,0 0 120px rgba(81,207,102,.5);animation:countPop .45s cubic-bezier(.34,1.56,.64,1)}
-
-/* ── WINNER OVERLAY ── */
-.winner-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:8000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px}
-.winner-overlay.show{display:flex;animation:wIn .35s ease}
-@keyframes wIn{from{opacity:0}to{opacity:1}}
-.winner-badge{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ffaa00);display:grid;place-items:center;font-size:48px;box-shadow:0 0 50px rgba(255,215,0,.9),0 0 100px rgba(255,215,0,.4);animation:badgePop 1s cubic-bezier(.34,1.56,.64,1)}
-@keyframes badgePop{from{transform:scale(0) rotate(-180deg)}to{transform:scale(1) rotate(0)}}
-.winner-roll{font-family:var(--fd);font-size:clamp(2rem,8vw,3rem);font-weight:800;color:#fff;text-align:center;text-shadow:0 0 30px rgba(255,215,0,.8);animation:fadeUp .4s ease .3s both}
-.winner-name{font-size:1.15rem;color:rgba(255,255,255,.8);text-align:center;animation:fadeUp .4s ease .45s both}
-.winner-topic{font-family:var(--fm);font-size:.95rem;color:#74c0fc;background:rgba(26,95,180,.3);border:1px solid rgba(116,192,252,.4);padding:8px 22px;border-radius:20px;animation:fadeUp .4s ease .55s both}
-.winner-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.12);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1rem;cursor:pointer;transition:background .2s}
-.winner-close:hover{background:rgba(255,255,255,.28)}
-.winner-actions{display:flex;gap:12px;margin-top:8px;animation:fadeUp .4s ease .7s both}
-
-/* ── STREAK BANNER ── */
 .streak-banner{background:linear-gradient(135deg,#f59f00,#e67700);color:#fff;border-radius:14px;padding:10px 16px;display:none;align-items:center;gap:10px;margin-bottom:12px;box-shadow:0 4px 16px rgba(245,159,0,.4);animation:fadeUp .3s ease}
 .streak-banner.on{display:flex}
 .streak-icon{font-size:1.6rem}
 .streak-text{font-size:.85rem;font-weight:700}
 .streak-sub{font-size:.68rem;opacity:.85;margin-top:1px}
 
-/* ── REPORT PAGE ── */
+/* ══════════════════════════════════════════════════
+   REPORT PAGE
+══════════════════════════════════════════════════ */
 .report-controls{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:var(--sh2)}
 .report-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
 @media(max-width:400px){.report-opts{grid-template-columns:1fr}}
 .ropt{display:flex;align-items:center;gap:8px;background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:9px 13px;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--ink2);transition:all .18s}
 .ropt:hover{border-color:var(--sky-m);background:var(--sky-l);color:var(--sky)}
 .ropt input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:var(--coral)}
-/* ── REPORT PREVIEW ── */
 .rp-header{text-align:center;border-bottom:3px solid #d9481a;padding-bottom:14px;margin-bottom:20px}
 .rp-title{font-family:Georgia,serif;font-size:1.7rem;font-weight:800;color:#1a1510}
 .rp-sub{font-size:.85rem;color:#7a6e62;margin-top:5px}
@@ -778,26 +497,90 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
 .rp-done{color:#1e9e5c;font-weight:700}
 .rp-pending{color:#d9481a;font-weight:700}
 .rp-comment{font-style:italic;color:#7a6e62}
-@media print{body *{display:none!important}#reportContent{display:block!important}}
-/* enhanced hover on cards */
-.hitem:hover,.topic-item:hover{transform:translateX(3px);transition:transform .15s}
-.sc:hover{transform:translateY(-2px)}
-.schip:hover{transform:translateY(-2px);box-shadow:var(--sh2);transition:all .2s}
-.bn .ni{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
-.bn:hover .ni{transform:translateY(-4px) scale(1.18)}
-.bn.active .ni{transform:scale(1.22)}
-.bn-bar{transition:opacity .2s,width .25s}
-.bn.active .bn-bar{opacity:1;width:28px}
-.sp-icon{animation:floatIco 3s ease-in-out infinite}
-@keyframes floatIco{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ══════════════════════════════════════════════════
+   GAME MODE
+══════════════════════════════════════════════════ */
+body.game-mode{--bg:#080814;--bg2:#0d0d1f;--bg3:#121228;--surf:#10102a;--surf2:#14143a;--surf3:#18184a;--bdr:#252558;--bdr2:#353580;--ink:#e0d8ff;--ink2:#aeaade;--ink3:#7878b8;--muted:#484880}
+body.game-mode::before{background:radial-gradient(ellipse 800px 600px at 90% 0%,rgba(217,72,26,.2) 0%,transparent 55%),radial-gradient(ellipse 600px 500px at 5% 100%,rgba(26,95,180,.18) 0%,transparent 55%),radial-gradient(ellipse 500px 400px at 50% 50%,rgba(94,53,177,.14) 0%,transparent 60%)}
+body.game-mode .topbar{background:rgba(8,8,20,.94);border-color:#252558}
+body.game-mode .bnav{background:rgba(8,8,20,.97);border-color:#252558}
+body.game-mode .wheel-card{background:var(--surf);border-color:#252558;box-shadow:0 0 50px rgba(26,95,180,.18)}
+body.game-mode canvas{box-shadow:0 0 35px rgba(217,72,26,.5),0 0 70px rgba(217,72,26,.18),0 0 0 5px var(--surf),0 0 0 6px #3535a0}
+body.game-mode .topic-card canvas{box-shadow:0 0 35px rgba(26,95,180,.55),0 0 70px rgba(26,95,180,.2),0 0 0 5px var(--surf),0 0 0 6px #2a2a7a}
+body.game-mode .result-card.live{border-color:#40c057;box-shadow:0 0 30px rgba(64,192,87,.25)}
+body.game-mode .btn-both{animation:btnGlow 2s ease-in-out infinite}
+body.game-mode .prog-fill{background:linear-gradient(90deg,#ff6b6b,#cc5de8,#339af0);filter:brightness(1.2)}
+body.game-mode .schip{background:var(--surf2);border-color:#252558}
+@keyframes btnGlow{0%,100%{box-shadow:0 6px 24px rgba(194,24,91,.4)}50%{box-shadow:0 6px 50px rgba(194,24,91,.9),0 0 80px rgba(194,24,91,.3)}}
+#particleCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .7s}
+body.game-mode #particleCanvas{opacity:1}
+.gm-btn{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:5px 11px;font-size:.7rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:var(--fn);letter-spacing:.03em}
+.gm-btn:hover{border-color:#7950f2;color:#7950f2;background:var(--violet-l)}
+body.game-mode .gm-btn{background:#1a1a40;border-color:#7950f2;color:#b197fc}
+@keyframes wheelShake{0%,100%{transform:rotate(0)}20%{transform:rotate(-2.5deg)}40%{transform:rotate(2.5deg)}60%{transform:rotate(-1.5deg)}80%{transform:rotate(1deg)}}
+canvas.shake{animation:wheelShake .45s ease-in-out}
+.gm-countdown{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;display:none;place-items:center}
+.gm-countdown.show{display:grid}
+.gm-count-num{font-family:var(--fd);font-size:clamp(6rem,20vw,12rem);font-weight:800;color:#fff;text-shadow:0 0 60px rgba(217,72,26,.8),0 0 120px rgba(217,72,26,.4);animation:countPop .65s cubic-bezier(.34,1.56,.64,1)}
+@keyframes countPop{from{transform:scale(2.8);opacity:0}to{transform:scale(1);opacity:1}}
+.gm-count-go{font-family:var(--fd);font-size:clamp(4rem,14vw,8rem);font-weight:800;color:#51cf66;text-shadow:0 0 60px #51cf66,0 0 120px rgba(81,207,102,.5);animation:countPop .45s cubic-bezier(.34,1.56,.64,1)}
+.winner-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:8000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px}
+.winner-overlay.show{display:flex;animation:wIn .35s ease}
+@keyframes wIn{from{opacity:0}to{opacity:1}}
+.winner-badge{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ffaa00);display:grid;place-items:center;font-size:48px;box-shadow:0 0 50px rgba(255,215,0,.9),0 0 100px rgba(255,215,0,.4);animation:badgePop 1s cubic-bezier(.34,1.56,.64,1)}
+@keyframes badgePop{from{transform:scale(0) rotate(-180deg)}to{transform:scale(1) rotate(0)}}
+.winner-roll{font-family:var(--fd);font-size:clamp(2rem,8vw,3rem);font-weight:800;color:#fff;text-align:center;text-shadow:0 0 30px rgba(255,215,0,.8);animation:fadeUp .4s ease .3s both}
+.winner-name{font-size:1.15rem;color:rgba(255,255,255,.8);text-align:center;animation:fadeUp .4s ease .45s both}
+.winner-topic{font-family:var(--fm);font-size:.95rem;color:#74c0fc;background:rgba(26,95,180,.3);border:1px solid rgba(116,192,252,.4);padding:8px 22px;border-radius:20px;animation:fadeUp .4s ease .55s both}
+.winner-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.12);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1rem;cursor:pointer;transition:background .2s}
+.winner-close:hover{background:rgba(255,255,255,.28)}
+.winner-actions{display:flex;gap:12px;margin-top:8px;animation:fadeUp .4s ease .7s both}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+@media(max-width:520px){
+  main{padding:12px 11px calc(var(--bnav-h) + 14px)}
+  canvas{width:255px!important;height:255px!important}
+  .stats-row{gap:6px}
+  .schip .num{font-size:1.3rem}
+  .students-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .stbar{flex-direction:column;gap:6px}
+  .sinput{min-width:unset;width:100%}
+  .tabs{width:100%}
+  .tab{flex:1;text-align:center}
+  .add-student-row{flex-direction:column}
+  .form-row{flex-direction:column}
+  .fselect,.finput{min-width:unset;width:100%}
+  .wheel-card{padding:14px 10px 12px}
+  .wfoot{flex-wrap:wrap;justify-content:center}
+  .btn-both{font-size:.82rem;padding:12px 14px}
+  .result-card{flex-direction:column;align-items:flex-start}
+  .cp-row{flex-direction:column}
+  .mactions{flex-direction:column;width:100%}
+  .mactions .btn{width:100%}
+  .report-opts{grid-template-columns:1fr}
+  .aw-big{font-size:1.5rem}
+  .hitem{grid-template-columns:auto 1fr}
+  .hright{display:none}
+  .tpresets{gap:4px}
+  .tpre{padding:5px 9px;font-size:.7rem}
+  .tdisplay{font-size:2.4rem}
+}
+@media(max-width:360px){
+  canvas{width:215px!important;height:215px!important}
+  .students-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .an-grid{grid-template-columns:1fr}
+  .schip .num{font-size:1.1rem}
+}
 </style>
 </head>
 <body>
 
 <canvas id="particleCanvas"></canvas>
-<div class="gm-countdown" id="gmCountdown">
-  <div class="gm-count-num" id="gmCountNum">3</div>
-</div>
+<div class="gm-countdown" id="gmCountdown"><div class="gm-count-num" id="gmCountNum">3</div></div>
 <div class="winner-overlay" id="winnerOverlay">
   <button class="winner-close" onclick="closeWinner()">✕</button>
   <div class="winner-badge">🏆</div>
@@ -809,6 +592,41 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
     <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="closeWinner()">↩ Re-spin</button>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════
+     🆕 FULLSCREEN TIMER OVERLAY
+══════════════════════════════════════════════════ -->
+<div id="fsTimerOverlay">
+  <div class="fs-particles" id="fsParticles"></div>
+
+  <div class="fs-title">⏱ SPEECH TIMER</div>
+  <div class="fs-student-info" id="fsStudentInfo">Tap anywhere to dismiss • timer keeps running</div>
+
+  <div class="fs-ring-wrap">
+    <svg class="fs-ring" width="280" height="280" viewBox="0 0 300 300">
+      <circle class="fs-ring-track" cx="150" cy="150" r="140"/>
+      <circle class="fs-ring-fill stage-ok" id="fsRingFill" cx="150" cy="150" r="140"/>
+    </svg>
+    <div class="fs-time-center">
+      <div class="fs-time" id="fsTimeDisplay">2:00</div>
+      <div class="fs-status" id="fsStatusText">READY</div>
+    </div>
+    <div class="fs-timesup" id="fsTimesUp">
+      <div class="fs-timesup-icon">⏰</div>
+      <div class="fs-timesup-text">TIME'S UP!</div>
+      <div class="fs-timesup-sub">Speech complete</div>
+    </div>
+  </div>
+
+  <div class="fs-controls" onclick="event.stopPropagation()">
+    <button class="fs-btn" id="fsBtnReset" onclick="fsReset()" title="Reset">⟳</button>
+    <button class="fs-btn primary" id="fsBtnPlayPause" onclick="fsTogglePlay()">▶</button>
+    <button class="fs-btn danger-btn" onclick="closeFsTimer()" title="Close">✕</button>
+  </div>
+
+  <div class="fs-hint">Tap background to hide overlay · timer continues running</div>
+</div>
+
 <div id="reportContent" style="display:none"></div>
 <div id="loadScreen">
   <div class="load-icon">🎤</div>
@@ -822,35 +640,25 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <div class="mhead">
-      <h2 id="modalTitle">–</h2>
-      <button class="mclose" onclick="closeModal()">✕</button>
-    </div>
+    <div class="mhead"><h2 id="modalTitle">–</h2><button class="mclose" onclick="closeModal()">✕</button></div>
     <div class="mbody" id="modalBody"></div>
   </div>
 </div>
 
 <div class="app">
-
 <div class="topbar">
   <div class="brand">
     <div class="brand-icon">🎤</div>
-    <div class="brand-text">
-      <h1>Extempore</h1>
-      <p>Speech Picker</p>
-    </div>
+    <div class="brand-text"><h1>Extempore</h1><p>Speech Picker</p></div>
   </div>
   <div class="topbar-mid">
     <div class="filter-chips">
-      <div class="fchip" id="yearChip">
-        🎓 <select id="yearSel" onchange="onFilterChange()"><option value="">All Years</option></select>
-      </div>
-      <div class="fchip" id="sectionChip">
-        🏷 <select id="sectionSel" onchange="onFilterChange()"><option value="">All Sections</option></select>
-      </div>
+      <div class="fchip" id="yearChip">🎓 <select id="yearSel" onchange="onFilterChange()"><option value="">All Years</option></select></div>
+      <div class="fchip" id="sectionChip">🏷 <select id="sectionSel" onchange="onFilterChange()"><option value="">All Sections</option></select></div>
     </div>
   </div>
   <div class="topbar-right">
+    <div class="live-clock" id="liveClock">--:--</div>
     <button class="gm-btn" id="gmBtn" onclick="toggleGameMode()">🎮 Game Mode</button>
     <div class="ts"><span class="d" style="background:var(--coral)"></span><span id="ts1">–</span></div>
     <div class="ts"><span class="d" style="background:var(--sage)"></span><span id="ts2">–</span></div>
@@ -858,17 +666,11 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
   </div>
 </div>
 
-<!-- MOBILE FILTER BAR (visible only on small screens) -->
 <div class="mobile-filters" id="mobileFilters">
-  <div class="fchip" id="mYearChip">
-    🎓 <select id="mYearSel" onchange="onMobileFilterChange()"><option value="">All Years</option></select>
-  </div>
-  <div class="fchip" id="mSectionChip">
-    🏷 <select id="mSectionSel" onchange="onMobileFilterChange()"><option value="">All Sections</option></select>
-  </div>
+  <div class="fchip" id="mYearChip">🎓 <select id="mYearSel" onchange="onMobileFilterChange()"><option value="">All Years</option></select></div>
+  <div class="fchip" id="mSectionChip">🏷 <select id="mSectionSel" onchange="onMobileFilterChange()"><option value="">All Sections</option></select></div>
   <button class="gm-btn" id="gmBtnMob" onclick="toggleGameMode()" style="flex-shrink:0">🎮</button>
 </div>
-<!-- MOBILE STAT ROW -->
 <div class="mobile-stat-row" id="mobileStatRow" style="display:none">
   <div class="ts"><span class="d" style="background:var(--coral)"></span><span id="mts1">–</span> Left</div>
   <div class="ts"><span class="d" style="background:var(--sage)"></span><span id="mts2">–</span> Done</div>
@@ -879,15 +681,12 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
 
 <!-- ══════ SPIN PAGE ══════ -->
 <div class="page active" id="page-spin">
-
   <div id="spinSelectPrompt" class="select-prompt">
     <div class="sp-icon">🎡</div>
     <div class="sp-title">Select Year & Section</div>
     <div class="sp-sub">Choose a year and section from the filters above to load students onto the wheel.</div>
   </div>
-
   <div id="spinContent" style="display:none">
-
     <div class="streak-banner" id="streakBanner">
       <span class="streak-icon">🔥</span>
       <div><div class="streak-text" id="streakText">3 in a row!</div><div class="streak-sub">consecutive speeches done this session!</div></div>
@@ -898,53 +697,31 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
       <div class="schip s-sky"><span class="num" id="sc3">0</span><span class="lbl">Topics</span></div>
       <div class="schip s-amber"><span class="num" id="sc4">0</span><span class="lbl">Total</span></div>
     </div>
-
     <div class="prog-wrap">
-      <div class="prog-hd">
-        <span class="prog-lbl">Session Progress</span>
-        <span class="prog-frac" id="pfrac">0 / 0</span>
-      </div>
+      <div class="prog-hd"><span class="prog-lbl">Session Progress</span><span class="prog-frac" id="pfrac">0 / 0</span></div>
       <div class="prog-track"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
     </div>
-
     <div class="fac-row">
       <span class="fac-lbl">Faculty:</span>
       <span class="fac-val" id="facBadge" onclick="changeFaculty()">👤 Set Faculty Name</span>
     </div>
-
     <div class="wheel-card roll-card">
       <div class="wtag">🎓 Roll Number</div>
-      <div class="wptr-wrap">
-        <div class="wptr"></div>
-        <canvas id="rollWheel" width="290" height="290"></canvas>
-      </div>
-      <div class="wfoot">
-        <span class="wcnt" id="rollCnt">–</span>
-        <button class="btn btn-sm" onclick="goTo('students')">👥 Students</button>
-      </div>
+      <div class="wptr-wrap"><div class="wptr"></div><canvas id="rollWheel" width="290" height="290"></canvas></div>
+      <div class="wfoot"><span class="wcnt" id="rollCnt">–</span><button class="btn btn-sm" onclick="goTo('students')">👥 Students</button></div>
       <button class="btn btn-coral" id="btnRoll" onclick="spinRoll()">⚡ Spin Roll Wheel</button>
     </div>
-
     <div class="wheel-card topic-card">
       <div class="wtag">📝 Topic</div>
-      <div class="wptr-wrap">
-        <div class="wptr"></div>
-        <canvas id="topicWheel" width="260" height="260"></canvas>
-      </div>
-      <div class="wfoot">
-        <span class="wcnt" id="topicCnt">–</span>
-        <button class="btn btn-sm" onclick="goTo('topics')">⚙ Topics</button>
-      </div>
+      <div class="wptr-wrap"><div class="wptr"></div><canvas id="topicWheel" width="260" height="260"></canvas></div>
+      <div class="wfoot"><span class="wcnt" id="topicCnt">–</span><button class="btn btn-sm" onclick="goTo('topics')">⚙ Topics</button></div>
       <button class="btn btn-sky" id="btnTopic" onclick="spinTopic()">⚡ Spin Topic Wheel</button>
     </div>
-
     <button class="btn btn-both" id="btnBoth" onclick="spinBoth()" style="margin-bottom:12px">🎡 Spin Both Wheels</button>
-
     <div class="result-card" id="resultCard">
       <div class="rpicks" id="rpicks"><span class="rph">Spin the wheels to pick a student & topic…</span></div>
       <button class="btn btn-sage" id="confirmBtn" onclick="openCommentPanel()" style="display:none">✅ Confirm</button>
     </div>
-
     <div class="comment-panel" id="commentPanel">
       <div class="cp-title">📝 Faculty Remarks</div>
       <div class="cp-student" id="cpStudent">–</div>
@@ -956,10 +733,13 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
         <button class="btn btn-ghost" onclick="skipComment()">Skip</button>
       </div>
     </div>
-
+    <!-- Timer section -->
     <div class="flex-between" style="margin-bottom:8px">
       <span class="slbl" style="margin:0">⏱ Speech Timer</span>
-      <button class="btn btn-sm" onclick="toggleTimer()">Show / Hide</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" id="fsOpenBtn" onclick="openFsTimer()" title="Fullscreen">⛶ Fullscreen</button>
+        <button class="btn btn-sm" onclick="toggleTimer()">Show / Hide</button>
+      </div>
     </div>
     <div class="timer-card" id="timerCard">
       <div class="timer-body">
@@ -974,25 +754,27 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
           <button class="tbtn tb-start" onclick="startTimer()">▶ Start</button>
           <button class="tbtn tb-pause" onclick="pauseTimer()">⏸ Pause</button>
           <button class="tbtn tb-reset" onclick="resetTimer()">⟳ Reset</button>
+          <button class="tbtn tb-fullscreen" onclick="openFsTimer()" title="Fullscreen Timer">⛶</button>
         </div>
       </div>
     </div>
-
+    <!-- Keyboard shortcuts hint -->
+    <div class="shortcuts-bar" style="margin-top:4px">
+      <span class="shortcut-chip"><span class="kbd-hint">Space</span> Spin Both</span>
+      <span class="shortcut-chip"><span class="kbd-hint">T</span> Timer</span>
+      <span class="shortcut-chip"><span class="kbd-hint">F</span> Fullscreen</span>
+      <span class="shortcut-chip"><span class="kbd-hint">R</span> Spin Roll</span>
+    </div>
   </div>
 </div>
 
 <!-- ══════ TOPICS PAGE ══════ -->
 <div class="page" id="page-topics">
   <div class="topic-config">
-    <div class="tc-hd">
-      <span class="tc-title">📝 Manage Topics</span>
-      <button class="btn btn-sm" onclick="loadTopics()">🔄 Refresh</button>
-    </div>
+    <div class="tc-hd"><span class="tc-title">📝 Manage Topics</span><button class="btn btn-sm" onclick="loadTopics()">🔄 Refresh</button></div>
     <div class="add-topic-form">
       <div class="slbl" style="margin:0">Add New Topic</div>
-      <div class="form-row">
-        <input type="text" class="finput" id="topicNameIn" placeholder="Topic name / title…">
-      </div>
+      <div class="form-row"><input type="text" class="finput" id="topicNameIn" placeholder="Topic name / title…"></div>
       <div class="form-row">
         <select class="fselect" id="topicYearIn"><option value="">All Years</option></select>
         <select class="fselect" id="topicSecIn"><option value="">All Sections</option></select>
@@ -1011,9 +793,22 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
     <input type="text" class="sinput" id="searchIn" placeholder="Search name or roll no…" oninput="renderStudents()">
     <div class="tabs">
       <button class="tab active" onclick="setTab('all',this)">All</button>
-      <button class="tab" onclick="setTab('active',this)">Pending</button>
-      <button class="tab" onclick="setTab('done',this)">Done</button>
+      <button class="tab" onclick="setTab('active',this)">Not Completed</button>
+      <button class="tab" onclick="setTab('done',this)">Completed</button>
     </div>
+  </div>
+  <!-- Sort bar -->
+  <div class="sort-bar">
+    <span class="sort-lbl">Sort:</span>
+    <button class="sort-btn active" id="sortRoll" onclick="setSort('roll',this)">Roll No</button>
+    <button class="sort-btn" id="sortName" onclick="setSort('name',this)">Name</button>
+    <button class="sort-btn" id="sortStatus" onclick="setSort('status',this)">Status</button>
+  </div>
+  <!-- Bulk actions -->
+  <div class="bulk-bar">
+    <span class="bulk-lbl">Bulk:</span>
+    <button class="btn btn-sm" onclick="bulkResetPending()">↩ Reset Pending</button>
+    <button class="btn btn-sm" onclick="bulkExport()">⬇ Export CSV</button>
   </div>
   <div class="add-student-row">
     <input type="text" class="finput" id="addRollIn" placeholder="Roll No" style="max-width:130px">
@@ -1035,9 +830,7 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
       <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
     </div>
   </div>
-  <div class="hist-list" id="histList">
-    <div class="no-hist"><span>📋</span>No records yet.</div>
-  </div>
+  <div class="hist-list" id="histList"><div class="no-hist"><span>📋</span>No records yet.</div></div>
 </div>
 
 <!-- ══════ ANALYTICS PAGE ══════ -->
@@ -1048,26 +841,15 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
     <div class="aw"><div class="aw-lbl">Completion</div><div class="aw-big" id="an3">–%</div><div class="aw-sub">of class</div></div>
     <div class="aw"><div class="aw-lbl">Topics Added</div><div class="aw-big" id="an4">–</div><div class="aw-sub">available</div></div>
   </div>
-  <div class="aw" style="margin-bottom:10px">
-    <div class="aw-lbl">Section-wise Progress</div>
-    <div class="section-bars" id="secBars"><span style="font-size:.8rem;color:var(--muted)">Load data to see stats</span></div>
-  </div>
-  <div class="aw">
-    <div class="aw-lbl">Topic Usage</div>
-    <div class="mbar" id="topicBars"><span style="font-size:.8rem;color:var(--muted)">No data</span></div>
-  </div>
-  <div style="margin-top:10px">
-    <button class="btn btn-coral" style="width:100%" onclick="loadAnalytics()">🔄 Refresh Analytics</button>
-  </div>
+  <div class="aw" style="margin-bottom:10px"><div class="aw-lbl">Section-wise Progress</div><div class="section-bars" id="secBars"><span style="font-size:.8rem;color:var(--muted)">Load data to see stats</span></div></div>
+  <div class="aw"><div class="aw-lbl">Topic Usage</div><div class="mbar" id="topicBars"><span style="font-size:.8rem;color:var(--muted)">No data</span></div></div>
+  <div style="margin-top:10px"><button class="btn btn-coral" style="width:100%" onclick="loadAnalytics()">🔄 Refresh Analytics</button></div>
 </div>
 
 <!-- ══════ REPORT PAGE ══════ -->
 <div class="page" id="page-report">
   <div class="report-controls">
-    <div class="tc-hd">
-      <span class="tc-title">📄 Class Report Generator</span>
-      <button class="btn btn-sm" onclick="loadReportData()">🔄 Load Data</button>
-    </div>
+    <div class="tc-hd"><span class="tc-title">📄 Class Report Generator</span><button class="btn btn-sm" onclick="loadReportData()">🔄 Load Data</button></div>
     <div class="slbl" style="margin-bottom:8px">Include in Report</div>
     <div class="report-opts">
       <label class="ropt"><input type="checkbox" id="ropt1" checked> 📊 Summary Stats</label>
@@ -1082,9 +864,7 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
       <button class="btn btn-coral" style="flex:1" onclick="generatePrintReport()">🖨 Print / Save PDF</button>
       <button class="btn btn-sky" style="flex:1" onclick="exportCSV()">⬇ Export CSV</button>
     </div>
-    <div style="margin-top:8px">
-      <button class="btn btn-sm" style="width:100%" onclick="previewReport()">👁 Preview In-Page</button>
-    </div>
+    <div style="margin-top:8px"><button class="btn btn-sm" style="width:100%" onclick="previewReport()">👁 Preview In-Page</button></div>
   </div>
   <div id="reportPreviewArea" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -1105,42 +885,393 @@ canvas.shake{animation:wheelShake .45s ease-in-out}
   <button class="bn" onclick="goTo('analytics')"><span class="ni">📊</span>Stats<div class="bn-bar"></div></button>
   <button class="bn" onclick="goTo('report')"><span class="ni">📄</span>Report<div class="bn-bar"></div></button>
 </div>
-
-</div><!-- /app -->
+</div>
 
 <script>
 /* ═══════════════════════════════════════════════
-   ⚙️  CONFIG — PASTE YOUR WEBAPP URL HERE
+   ⚙️  CONFIG
 ═══════════════════════════════════════════════ */
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx7WpSM-9q6ShajCXzhzvGFwNdve3wT5y9kPJnGgErETvJg-FsJ8dZNxSbH24ovC-MMQg/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyV-2UEjcCwsj3E8MSNnsgDLogRjJFNiBmeuqz0_nu2V9pchabLlWY9Aam7X_LmLS0WMQ/exec";
 
-/* ════ STATE — declared ONCE ════ */
-let allStudents = [];
-let activeRolls = [];
-let doneRolls = [];
-let allTopics = [];
-let activeTopics = [];
-let sessionLog = [];
-let pendingRoll = null;
-let pendingTopic = null;
-let spinning = false;
-let gameModeOn = false;
-let studentTab = 'all';
-let currentYear = "";
-let currentSection = "";
-let facultyName = "Faculty";
-let sessionStreak = 0;
-let timerSecs = 120;
-let timerRem = 120;
-let timerRunning = false;
-let timerInterval = null;
-let particleRAF = null;
-let particles = [];
+/* ════ STATE ════ */
+let allStudents = [], activeRolls = [], doneRolls = [], allTopics = [], activeTopics = [];
+let sessionLog = [], pendingRoll = null, pendingTopic = null, spinning = false;
+let gameModeOn = false, studentTab = 'all', currentYear = "", currentSection = "";
+let facultyName = "Faculty", sessionStreak = 0;
+let timerSecs = 120, timerRem = 120, timerRunning = false, timerInterval = null;
+let particleRAF = null, particles = [];
+let studentSort = 'roll';
 
 /* ════ COLORS ════ */
 const WC = ['#FF6B6B','#FF8E53','#FFA94D','#FFD43B','#A9E34B','#40C057',
   '#20C997','#22B8CF','#339AF0','#5C7CFA','#7950F2','#CC5DE8',
   '#F06595','#E64980','#FF6348','#FF7F50','#FFA07A','#74C0FC','#8CE99A','#E599F7'];
+
+/* ════════════════════════════════════════════
+   FULLSCREEN TIMER
+════════════════════════════════════════════ */
+let fsVisible = false;
+const RING_CIRCUMFERENCE = 2 * Math.PI * 140; // ~879.6
+
+function openFsTimer() {
+  fsVisible = true;
+  const ov = document.getElementById('fsTimerOverlay');
+  ov.classList.add('show');
+  // Update student info in FS overlay
+  let info = 'Tap anywhere to dismiss · timer keeps running';
+  if (pendingRoll && pendingTopic) {
+    info = `${pendingRoll.rollNo} · ${pendingRoll.name}  —  Topic #${pendingTopic.topicNo}: ${pendingTopic.topicName}`;
+  } else if (pendingRoll) {
+    info = `${pendingRoll.rollNo} · ${pendingRoll.name}`;
+  }
+  document.getElementById('fsStudentInfo').textContent = info;
+  updateFsRing();
+  // click background to dismiss
+  ov.onclick = (e) => { if (e.target === ov) closeFsTimer(); };
+  // If timer not running and not done, auto-start
+  if (!timerRunning && timerRem === timerSecs && timerRem > 0) {
+    startTimer();
+  }
+}
+
+function closeFsTimer() {
+  fsVisible = false;
+  document.getElementById('fsTimerOverlay').classList.remove('show');
+  document.getElementById('fsTimesUp').classList.remove('show');
+}
+
+function fsTogglePlay() {
+  if (timerRunning) pauseTimer();
+  else startTimer();
+}
+
+function fsReset() {
+  resetTimer();
+  document.getElementById('fsTimesUp').classList.remove('show');
+}
+
+function updateFsRing() {
+  const fill = document.getElementById('fsRingFill');
+  const timeEl = document.getElementById('fsTimeDisplay');
+  const statusEl = document.getElementById('fsStatusText');
+  const btn = document.getElementById('fsBtnPlayPause');
+
+  const pct = timerSecs > 0 ? timerRem / timerSecs : 0;
+  const offset = RING_CIRCUMFERENCE * (1 - pct);
+  fill.style.strokeDashoffset = offset;
+
+  // Color stages
+  fill.classList.remove('stage-ok','stage-warn','stage-danger','done');
+  timeEl.classList.remove('warn','danger','done-txt');
+
+  if (timerRem === 0) {
+    fill.classList.add('done');
+    timeEl.classList.add('done-txt');
+    statusEl.textContent = "TIME'S UP";
+    btn.textContent = '▶';
+  } else if (pct > 0.4) {
+    fill.classList.add('stage-ok');
+    statusEl.textContent = timerRunning ? 'SPEAKING' : 'READY';
+    btn.textContent = timerRunning ? '⏸' : '▶';
+  } else if (pct > 0.15) {
+    fill.classList.add('stage-warn');
+    timeEl.classList.add('warn');
+    statusEl.textContent = 'WRAP UP';
+    btn.textContent = timerRunning ? '⏸' : '▶';
+  } else {
+    fill.classList.add('stage-danger');
+    timeEl.classList.add('danger');
+    statusEl.textContent = 'FINISHING!';
+    btn.textContent = timerRunning ? '⏸' : '▶';
+  }
+
+  // Update FS time display
+  const m = Math.floor(timerRem / 60), s = timerRem % 60;
+  timeEl.textContent = m + ':' + String(s).padStart(2, '0');
+}
+
+/* ════════════════════════════════════════════
+   TIMER — ENHANCED
+════════════════════════════════════════════ */
+function setTimer(s) {
+  timerSecs = s; timerRem = s; timerRunning = false; clearInterval(timerInterval);
+  updateTimerDisplay();
+  document.querySelectorAll('.tpre').forEach(b => {
+    const v = parseInt(b.textContent.split(':')[0]) * 60 + parseInt(b.textContent.split(':')[1]);
+    b.classList.toggle('on', v === s);
+  });
+  if (fsVisible) updateFsRing();
+}
+
+function startTimer() {
+  if (timerRunning || timerRem <= 0) return;
+  timerRunning = true;
+  timerInterval = setInterval(() => {
+    timerRem--;
+    updateTimerDisplay();
+    if (fsVisible) updateFsRing();
+    if (timerRem <= 0) {
+      timerRem = 0; clearInterval(timerInterval); timerRunning = false;
+      onTimerEnd();
+    }
+  }, 1000);
+  if (fsVisible) updateFsRing();
+}
+
+function pauseTimer() {
+  timerRunning = false; clearInterval(timerInterval);
+  if (fsVisible) updateFsRing();
+}
+
+function resetTimer() {
+  timerRunning = false; clearInterval(timerInterval);
+  timerRem = timerSecs; updateTimerDisplay();
+  if (fsVisible) updateFsRing();
+}
+
+function onTimerEnd() {
+  updateTimerDisplay();
+  // Show Times Up in FS overlay if open
+  if (fsVisible) {
+    document.getElementById('fsTimesUp').classList.add('show');
+    updateFsRing();
+    launchFsParticles();
+  }
+  // Play timer end sound
+  playTimerEndChime();
+  toast("⏰ Time's up!", "info");
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerRem / 60), s = timerRem % 60;
+  const el = document.getElementById('tdisp');
+  el.textContent = m + ':' + String(s).padStart(2, '0');
+  el.className = 'tdisplay' + (timerRem <= 20 && timerRem > 0 ? ' warn' : timerRem === 0 ? ' done' : '');
+  if (fsVisible) updateFsRing();
+}
+
+function toggleTimer() {
+  document.getElementById('timerCard').classList.toggle('open');
+}
+
+/* ════════════════════════════════════════════
+   🔔 TIMER END CHIME SOUND
+════════════════════════════════════════════ */
+function playTimerEndChime() {
+  try {
+    const AC = new (window.AudioContext || window.webkitAudioContext)();
+    // Gentle bell sequence — 3 bell strikes with diminishing amplitude
+    const pattern = [
+      { freq: 880, time: 0,    dur: 0.7, vol: 0.22 },
+      { freq: 1046, time: 0.25, dur: 0.6, vol: 0.18 },
+      { freq: 880, time: 0.5,  dur: 0.6, vol: 0.18 },
+      { freq: 1318, time: 0.8,  dur: 1.2, vol: 0.25 },
+    ];
+    pattern.forEach(({ freq, time, dur, vol }) => {
+      const osc = AC.createOscillator();
+      const gain = AC.createGain();
+      const biquad = AC.createBiquadFilter();
+      biquad.type = 'bandpass'; biquad.frequency.value = freq; biquad.Q.value = 10;
+      osc.connect(biquad); biquad.connect(gain); gain.connect(AC.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, AC.currentTime + time);
+      gain.gain.linearRampToValueAtTime(vol, AC.currentTime + time + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + time + dur);
+      osc.start(AC.currentTime + time);
+      osc.stop(AC.currentTime + time + dur + 0.05);
+    });
+    // Add a low resonant tone underneath
+    const bass = AC.createOscillator();
+    const bassGain = AC.createGain();
+    bass.connect(bassGain); bassGain.connect(AC.destination);
+    bass.type = 'sine'; bass.frequency.value = 220;
+    bassGain.gain.setValueAtTime(0, AC.currentTime);
+    bassGain.gain.linearRampToValueAtTime(0.06, AC.currentTime + 0.05);
+    bassGain.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + 1.8);
+    bass.start(AC.currentTime); bass.stop(AC.currentTime + 1.9);
+  } catch(e) {}
+}
+
+/* ════ FS Particle burst on time's up ════ */
+function launchFsParticles() {
+  const container = document.getElementById('fsParticles');
+  container.innerHTML = '';
+  const cols = ['#40c057','#74c0fc','#ffd43b','#cc5de8','#ff6b6b','#20c997'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;
+      width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      border-radius:${Math.random()>.5?'50%':'3px'};
+      animation:cpf ${Math.random()*2+1.5}s ease forwards;
+      animation-delay:${Math.random()*.5}s;opacity:0`;
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+/* ════════════════════════════════════════════
+   🆕 STATUS TOGGLE — User-side
+   Backend uses: "Completed" | "Not Completed"
+════════════════════════════════════════════ */
+async function toggleStudentStatus(rollNo, currentStatus) {
+  const student = allStudents.find(s => s.rollNo === rollNo);
+  if (!student) return;
+  const isCompleted = currentStatus === 'Completed';
+
+  if (isCompleted) {
+    // ── Completed → Not Completed ──────────────────────────
+    if (!confirm(`Undo completion for ${rollNo} (${student.name})?\nThis will mark them as Not Completed.`)) {
+      // User cancelled — re-render to restore checkbox state
+      renderStudents(); return;
+    }
+    try {
+      // Use resetStatus action (calls saveStatus in backend)
+      await api("resetStatus", { rollNo, year: currentYear, section: currentSection });
+    } catch(e) {
+      // Backend may not have resetStatus yet — fall through to local-only update
+      console.warn('resetStatus API not available, updating locally only:', e.message);
+    }
+    // Update local state
+    student.status = 'Not Completed';
+    allStudents = allStudents.map(s => s.rollNo === rollNo ? { ...s, status: 'Not Completed', topicNo: '', speechDate: '', comments: '' } : s);
+    activeRolls = allStudents.filter(s => s.status !== 'Completed');
+    doneRolls   = allStudents.filter(s => s.status === 'Completed');
+    toast(`↩ ${rollNo} reset to Not Completed`, 'info');
+    updateStats(); renderStudents(); drawRollWheel();
+
+  } else {
+    // ── Not Completed → Completed ──────────────────────────
+    // Open remarks modal then call confirmPick
+    openMarkCompletedModal(rollNo, student.name);
+  }
+}
+
+/* Mark completed modal (called from toggle) */
+function openMarkCompletedModal(rollNo, name) {
+  // Pick a topic — prefer first unused topic, else first available
+  const topic = activeTopics[0] || allTopics[0] || null;
+  const topicLine = topic ? `Topic: <b>#${topic.topicNo} — ${topic.topicName}</b>` : '<span style="color:var(--coral)">No topics available — topic will be left blank</span>';
+  openModal(`✅ Mark Completed — ${rollNo}`, `
+    <div><div class="mlbl">Student</div>
+    <div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:4px">${rollNo} · ${name}</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px">${topicLine}</div></div>
+    <div><div class="mlbl">Faculty Remarks <span style="font-weight:400;color:var(--muted)">(optional)</span></div>
+    <textarea class="mtextarea" id="mcComment" placeholder="Enter speech remarks / feedback…"></textarea></div>
+    <div class="mactions">
+      <button class="btn btn-ghost" onclick="cancelMarkCompleted('${rollNo}')">✕ Cancel</button>
+      <button class="btn btn-sage" onclick="submitMarkCompleted('${rollNo}')">✅ Confirm Completed</button>
+    </div>`);
+}
+
+function cancelMarkCompleted(rollNo) {
+  closeModal();
+  // Snap the toggle back to unchecked — re-render is enough
+  renderStudents();
+}
+
+async function submitMarkCompleted(rollNo) {
+  const comment = document.getElementById('mcComment').value.trim();
+  const topic   = activeTopics[0] || allTopics[0] || { topicNo: '', topicName: '' };
+  const saveBtn = document.querySelector('#modalBody .btn-sage');
+  if (saveBtn) { saveBtn.innerHTML = '<span class="spinner"></span> Saving…'; saveBtn.disabled = true; }
+  try {
+    await api("confirmPick", {
+      rollNo,
+      topicNo:   topic.topicNo   || '',
+      topicName: topic.topicName || '',
+      comments:  comment,
+      faculty:   facultyName,
+      year:      currentYear,
+      section:   currentSection
+    });
+    // Update local state
+    allStudents = allStudents.map(s => s.rollNo === rollNo
+      ? { ...s, status: 'Completed', comments: comment, topicNo: topic.topicNo, speechDate: new Date().toLocaleDateString('en-IN') }
+      : s);
+    activeRolls = allStudents.filter(s => s.status !== 'Completed');
+    doneRolls   = allStudents.filter(s => s.status === 'Completed');
+    // Also remove topic from active pool
+    if (topic.topicNo) activeTopics = activeTopics.filter(t => t.topicNo !== topic.topicNo);
+    sessionLog.unshift({
+      rollNo, name: allStudents.find(s=>s.rollNo===rollNo)?.name || '',
+      topicNo: topic.topicNo, topicName: topic.topicName,
+      comments: comment, faculty: facultyName,
+      speechDate: new Date().toLocaleDateString('en-IN'),
+      timestamp: new Date().toLocaleString('en-IN')
+    });
+    closeModal();
+    toast(`✅ ${rollNo} marked Completed!`, 'success');
+    launchConfetti(40);
+    updateStats(); renderStudents(); drawRollWheel(); drawTopicWheel();
+  } catch(e) {
+    toast('⚠ ' + e.message, 'error');
+    if (saveBtn) { saveBtn.innerHTML = '✅ Confirm Completed'; saveBtn.disabled = false; }
+    // Snap toggle back on failure
+    renderStudents();
+  }
+}
+
+/* ════════════════════════════════════════════
+   SORT
+════════════════════════════════════════════ */
+function setSort(type, el) {
+  studentSort = type;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderStudents();
+}
+
+function sortList(list) {
+  return [...list].sort((a, b) => {
+    if (studentSort === 'name')   return (a.name || '').localeCompare(b.name || '');
+    if (studentSort === 'status') return (a.status || '').localeCompare(b.status || '');
+    // default: roll
+    return String(a.rollNo).localeCompare(String(b.rollNo), undefined, { numeric: true });
+  });
+}
+
+/* ════════════════════════════════════════════
+   BULK ACTIONS
+════════════════════════════════════════════ */
+function bulkResetPending() {
+  if (!confirm('Reset all pending students (clear any in-progress data)? This only affects the local view.')) return;
+  activeRolls = allStudents.filter(s => s.status !== 'Completed');
+  renderStudents(); drawRollWheel(); updateStats();
+  toast('↩ Pending list refreshed from data', 'info');
+}
+
+function bulkExport() { exportCSV(); }
+
+/* ════════════════════════════════════════════
+   LIVE CLOCK
+════════════════════════════════════════════ */
+function updateLiveClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  const el = document.getElementById('liveClock');
+  if (el) el.textContent = `${h}:${m}:${s}`;
+}
+setInterval(updateLiveClock, 1000);
+updateLiveClock();
+
+/* ════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  const tag = document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  switch (e.key) {
+    case ' ':
+    case 'b': e.preventDefault(); spinBoth(); break;
+    case 'r': case 'R': spinRoll(); break;
+    case 't': case 'T': toggleTimer(); break;
+    case 'f': case 'F': openFsTimer(); break;
+    case 'Escape': closeFsTimer(); closeModal(); break;
+  }
+});
 
 /* ══════════════════════════════════════════════════
    API via JSONP
@@ -1151,32 +1282,19 @@ function api(action, payload = {}) {
     const cbName = '__gsap_cb_' + (++_cbCount);
     const params = new URLSearchParams({ action, callback: cbName, ...payload });
     const url = WEBAPP_URL + '?' + params.toString();
-
     const timer = setTimeout(() => {
       delete window[cbName];
-      const s = document.getElementById('__jsonp_' + cbName);
-      if (s) s.remove();
-      reject(new Error('Request timed out. Check your Web App URL and permissions.'));
+      const s = document.getElementById('__jsonp_' + cbName); if (s) s.remove();
+      reject(new Error('Request timed out.'));
     }, 20000);
-
     window[cbName] = (json) => {
-      clearTimeout(timer);
-      delete window[cbName];
-      const s = document.getElementById('__jsonp_' + cbName);
-      if (s) s.remove();
-      if (json && json.ok) resolve(json.data);
-      else reject(new Error((json && json.error) || 'API error'));
+      clearTimeout(timer); delete window[cbName];
+      const s = document.getElementById('__jsonp_' + cbName); if (s) s.remove();
+      if (json && json.ok) resolve(json.data); else reject(new Error((json && json.error) || 'API error'));
     };
-
     const script = document.createElement('script');
-    script.id = '__jsonp_' + cbName;
-    script.src = url;
-    script.onerror = () => {
-      clearTimeout(timer);
-      delete window[cbName];
-      script.remove();
-      reject(new Error('Script load failed. Check WEBAPP_URL is correct and deployed as "Anyone".'));
-    };
+    script.id = '__jsonp_' + cbName; script.src = url;
+    script.onerror = () => { clearTimeout(timer); delete window[cbName]; script.remove(); reject(new Error('Script load failed.')); };
     document.head.appendChild(script);
   });
 }
@@ -1191,7 +1309,7 @@ async function boot() {
     hideLoad();
     toast("✅ Connected to Google Sheets!", "success");
   } catch(e) {
-    document.querySelector('.load-sub').textContent = "⚠ " + e.message + " — check WEBAPP_URL";
+    document.querySelector('.load-sub').textContent = "⚠ " + e.message;
     toast("⚠ " + e.message, "error");
     hideLoad();
   }
@@ -1199,722 +1317,441 @@ async function boot() {
 
 function hideLoad() {
   const ls = document.getElementById('loadScreen');
-  ls.classList.add('hide');
-  setTimeout(() => ls.style.display = 'none', 500);
+  ls.classList.add('hide'); setTimeout(() => ls.style.display='none', 500);
 }
 
 function populateSelect(id, arr, placeholder) {
   const sel = document.getElementById(id);
   const cur = sel.value;
   sel.innerHTML = `<option value="">${placeholder}</option>`;
-  arr.forEach(v => {
-    const o = document.createElement('option');
-    o.value = v; o.textContent = v; sel.appendChild(o);
-  });
+  arr.forEach(v => { const o = document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
   if (cur) sel.value = cur;
 }
 
 function populateAllSelects(years, sections) {
-  populateSelect("yearSel",    years,    "All Years");
+  populateSelect("yearSel", years, "All Years");
   populateSelect("sectionSel", sections, "All Sections");
-  populateSelect("topicYearIn",years,    "All Years");
+  populateSelect("topicYearIn", years, "All Years");
   populateSelect("topicSecIn", sections, "All Sections");
-  populateSelect("mYearSel",   years,    "All Years");
-  populateSelect("mSectionSel",sections, "All Sections");
+  populateSelect("mYearSel", years, "All Years");
+  populateSelect("mSectionSel", sections, "All Sections");
 }
 
-/* Mobile filters sync to desktop and trigger same logic */
 function onMobileFilterChange() {
   document.getElementById('yearSel').value    = document.getElementById('mYearSel').value;
   document.getElementById('sectionSel').value = document.getElementById('mSectionSel').value;
   onFilterChange();
 }
 
-/* Keep mobile selects in sync when desktop ones change */
 function syncMobileSelects() {
   document.getElementById('mYearSel').value    = document.getElementById('yearSel').value;
   document.getElementById('mSectionSel').value = document.getElementById('sectionSel').value;
 }
 
-/* ══════════════ FILTER CHANGE ══════════════ */
 async function onFilterChange() {
   currentYear    = document.getElementById('yearSel').value;
   currentSection = document.getElementById('sectionSel').value;
-
   document.getElementById('yearChip').classList.toggle('active', !!currentYear);
   document.getElementById('sectionChip').classList.toggle('active', !!currentSection);
   document.getElementById('mYearChip').classList.toggle('active', !!currentYear);
   document.getElementById('mSectionChip').classList.toggle('active', !!currentSection);
-
-  // Keep mobile dropdowns in sync
   syncMobileSelects();
-
   if (!currentYear && !currentSection) {
-    document.getElementById('spinSelectPrompt').style.display = '';
-    document.getElementById('spinContent').style.display = 'none';
-    document.getElementById('mobileStatRow').style.display = 'none';
+    document.getElementById('spinSelectPrompt').style.display='';
+    document.getElementById('spinContent').style.display='none';
+    document.getElementById('mobileStatRow').style.display='none';
     return;
   }
-
-  document.getElementById('spinSelectPrompt').style.display = 'none';
-  document.getElementById('spinContent').style.display = 'block';
-  document.getElementById('mobileStatRow').style.display = '';
-
-  await loadStudents();
-  await loadTopics();
-  renderWheels();
+  document.getElementById('spinSelectPrompt').style.display='none';
+  document.getElementById('spinContent').style.display='block';
+  document.getElementById('mobileStatRow').style.display='';
+  await loadStudents(); await loadTopics(); renderWheels();
 }
 
-/* ══════════════ LOAD STUDENTS ══════════════ */
 async function loadStudents() {
   try {
     const d = await api("getStudents", { year: currentYear, section: currentSection });
     allStudents = d.students;
+    // Backend values: "Completed" | "Not Completed" (may also appear as empty/undefined on new rows)
     activeRolls = allStudents.filter(s => s.status !== "Completed");
     doneRolls   = allStudents.filter(s => s.status === "Completed");
-    updateStats();
-    renderStudents();
-    drawRollWheel();
+    updateStats(); renderStudents(); drawRollWheel();
   } catch(e) { toast("⚠ " + e.message, "error"); }
 }
 
-/* ══════════════ LOAD TOPICS ══════════════ */
 async function loadTopics() {
   try {
     const d = await api("getTopics", { year: currentYear, section: currentSection });
-    allTopics = d.topics;
-    activeTopics = [...allTopics];
-    updateStats();
-    drawTopicWheel();
-    renderTopicList();
+    allTopics = d.topics; activeTopics = [...allTopics];
+    updateStats(); drawTopicWheel(); renderTopicList();
   } catch(e) { toast("⚠ " + e.message, "error"); }
 }
 
-/* ══════════════ LOAD HISTORY ══════════════ */
 async function loadHistory() {
   try {
     const d = await api("getSessionLog", { year: currentYear, section: currentSection });
-    sessionLog = d.log;
-    renderHistory();
+    sessionLog = d.log; renderHistory();
   } catch(e) { toast("⚠ " + e.message, "error"); }
 }
 
-/* ══════════════ LOAD ANALYTICS ══════════════ */
 async function loadAnalytics() {
   try {
     const d = await api("getDashboard", { year: currentYear, section: currentSection });
     document.getElementById('an1').textContent = d.total;
     document.getElementById('an2').textContent = d.completed;
-    const pct = d.total ? Math.round(d.completed / d.total * 100) : 0;
+    const pct = d.total ? Math.round(d.completed/d.total*100) : 0;
     document.getElementById('an3').textContent = pct + '%';
     document.getElementById('an4').textContent = d.topicCount;
-    const sb = document.getElementById('secBars');
-    const smap = d.sectionMap || {};
-    const skeys = Object.keys(smap);
-    if (!skeys.length) {
-      sb.innerHTML = '<span style="font-size:.8rem;color:var(--muted)">No data</span>';
-    } else {
+    const sb = document.getElementById('secBars'), smap = d.sectionMap || {}, skeys = Object.keys(smap);
+    if (!skeys.length) { sb.innerHTML='<span style="font-size:.8rem;color:var(--muted)">No data</span>'; }
+    else {
       sb.innerHTML = skeys.map(s => {
-        const sd = smap[s];
-        const sp = sd.total ? Math.round(sd.completed / sd.total * 100) : 0;
-        return `<div>
-          <div class="sec-row"><span class="sec-name">Section ${s}</span><span class="sec-prog">${sd.completed}/${sd.total} · ${sp}%</span></div>
-          <div class="prog-track" style="margin-top:4px"><div class="prog-fill" style="width:${sp}%"></div></div>
-        </div>`;
+        const sd = smap[s], sp = sd.total ? Math.round(sd.completed/sd.total*100) : 0;
+        return `<div><div class="sec-row"><span class="sec-name">Section ${s}</span><span class="sec-prog">${sd.completed}/${sd.total} · ${sp}%</span></div>
+          <div class="prog-track" style="margin-top:4px"><div class="prog-fill" style="width:${sp}%"></div></div></div>`;
       }).join('');
     }
     const tb = document.getElementById('topicBars');
-    if (!allTopics.length) {
-      tb.innerHTML = '<span style="font-size:.8rem;color:var(--muted)">No topics</span>';
-    } else {
-      const maxUse = Math.max(1, ...allTopics.map(t => parseInt(t.usedCount) || 0));
-      const cols = ['var(--coral)', 'var(--sky)', 'var(--sage)', 'var(--amber)', 'var(--violet)'];
-      tb.innerHTML = allTopics.map((t, i) => `
-        <div class="mbar-row">
-          <span class="mbar-lbl">#${t.topicNo} ${t.topicName}</span>
-          <div class="mbar-track"><div class="mbar-fill" style="width:${Math.round((parseInt(t.usedCount) || 0) / maxUse * 100)}%;background:${cols[i % 5]}"></div></div>
-          <span class="mbar-n">${t.usedCount || 0}</span>
-        </div>`).join('');
+    if (!allTopics.length) { tb.innerHTML='<span style="font-size:.8rem;color:var(--muted)">No topics</span>'; }
+    else {
+      const maxUse = Math.max(1,...allTopics.map(t=>parseInt(t.usedCount)||0));
+      const cols=['var(--coral)','var(--sky)','var(--sage)','var(--amber)','var(--violet)'];
+      tb.innerHTML = allTopics.map((t,i)=>`<div class="mbar-row">
+        <span class="mbar-lbl">#${t.topicNo} ${t.topicName}</span>
+        <div class="mbar-track"><div class="mbar-fill" style="width:${Math.round((parseInt(t.usedCount)||0)/maxUse*100)}%;background:${cols[i%5]}"></div></div>
+        <span class="mbar-n">${t.usedCount||0}</span></div>`).join('');
     }
   } catch(e) { toast("⚠ " + e.message, "error"); }
 }
 
-/* ══════════════ STATS ══════════════ */
 function updateStats() {
-  const rem = activeRolls.length, dn = doneRolls.length, tot = allStudents.length;
-  document.getElementById('ts1').textContent = rem;
-  document.getElementById('ts2').textContent = dn;
-  document.getElementById('ts3').textContent = activeTopics.length;
-  document.getElementById('mts1').textContent = rem;
-  document.getElementById('mts2').textContent = dn;
-  document.getElementById('mts3').textContent = activeTopics.length;
-  document.getElementById('sc1').textContent = rem;
-  document.getElementById('sc2').textContent = dn;
-  document.getElementById('sc3').textContent = activeTopics.length;
-  document.getElementById('sc4').textContent = tot;
-  document.getElementById('rollCnt').textContent = rem + ' pending';
-  document.getElementById('topicCnt').textContent = activeTopics.length + ' topics';
-  const pct = tot ? (dn / tot * 100) : 0;
-  document.getElementById('pfill').style.width = pct + '%';
-  document.getElementById('pfrac').textContent = dn + ' / ' + tot;
+  const rem=activeRolls.length, dn=doneRolls.length, tot=allStudents.length;
+  document.getElementById('ts1').textContent=rem;
+  document.getElementById('ts2').textContent=dn;
+  document.getElementById('ts3').textContent=activeTopics.length;
+  document.getElementById('mts1').textContent=rem;
+  document.getElementById('mts2').textContent=dn;
+  document.getElementById('mts3').textContent=activeTopics.length;
+  document.getElementById('sc1').textContent=rem;
+  document.getElementById('sc2').textContent=dn;
+  document.getElementById('sc3').textContent=activeTopics.length;
+  document.getElementById('sc4').textContent=tot;
+  document.getElementById('rollCnt').textContent=rem+' pending';
+  document.getElementById('topicCnt').textContent=activeTopics.length+' topics';
+  const pct=tot?(dn/tot*100):0;
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('pfrac').textContent=dn+' / '+tot;
 }
 
 /* ══════════════ WHEELS ══════════════ */
 function renderWheels() { drawRollWheel(); drawTopicWheel(); }
 
-function drawWheelCore(canvasId, items, labelFn, angle = 0) {
+function drawWheelCore(canvasId, items, labelFn, angle=0) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
-  const W = canvas.offsetWidth || canvas.width, H = canvas.offsetHeight || canvas.height;
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext('2d'), cx = W / 2, cy = H / 2, r = Math.min(W, H) / 2 - 4;
-  ctx.clearRect(0, 0, W, H);
+  const W=canvas.offsetWidth||canvas.width, H=canvas.offsetHeight||canvas.height;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d'), cx=W/2, cy=H/2, r=Math.min(W,H)/2-4;
+  ctx.clearRect(0,0,W,H);
   if (!items.length) {
-    ctx.fillStyle = '#f4efe8'; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#e2d9cd'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = '#a89e92'; ctx.font = 'bold 13px sans-serif';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('All done! 🎉', cx, cy); return;
+    ctx.fillStyle='#f4efe8'; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#e2d9cd'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#a89e92'; ctx.font='bold 13px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('All done! 🎉',cx,cy); return;
   }
-  const slice = (2 * Math.PI) / items.length;
-  items.forEach((item, i) => {
-    const a0 = angle + i * slice - Math.PI / 2, a1 = a0 + slice;
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, a0, a1); ctx.closePath();
-    ctx.fillStyle = WC[i % WC.length]; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.65)'; ctx.lineWidth = 1.5; ctx.stroke();
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(a0 + slice / 2);
-    ctx.fillStyle = 'rgba(0,0,0,.72)';
-    const fs = items.length > 25 ? 7 : items.length > 15 ? 9 : 10;
-    ctx.font = `600 ${fs}px 'JetBrains Mono',monospace`;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText(String(labelFn(item)).substring(0, 12), r * .38, 0);
+  const slice=(2*Math.PI)/items.length;
+  items.forEach((item,i)=>{
+    const a0=angle+i*slice-Math.PI/2, a1=a0+slice;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a0,a1); ctx.closePath();
+    ctx.fillStyle=WC[i%WC.length]; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.65)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(a0+slice/2);
+    ctx.fillStyle='rgba(0,0,0,.72)';
+    const fs=items.length>25?7:items.length>15?9:10;
+    ctx.font=`600 ${fs}px 'JetBrains Mono',monospace`;
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText(String(labelFn(item)).substring(0,12), r*.38, 0);
     ctx.restore();
   });
-  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 3; ctx.stroke();
-  ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2);
-  ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#e2d9cd'; ctx.lineWidth = 2; ctx.stroke();
-  ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-  ctx.fillStyle = '#d9481a'; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=3; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2);
+  ctx.fillStyle='#fff'; ctx.fill(); ctx.strokeStyle='#e2d9cd'; ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.fillStyle='#d9481a'; ctx.fill();
 }
 
-function drawRollWheel(a = 0)  { drawWheelCore('rollWheel',  activeRolls,  s => s.rollNo, a); }
-function drawTopicWheel(a = 0) { drawWheelCore('topicWheel', activeTopics, t => `#${t.topicNo} ${t.topicName}`, a); }
+function drawRollWheel(a=0)  { drawWheelCore('rollWheel',  activeRolls,  s=>s.rollNo, a); }
+function drawTopicWheel(a=0) { drawWheelCore('topicWheel', activeTopics, t=>`#${t.topicNo} ${t.topicName}`, a); }
 
 /* ══════════════ SPIN ENGINE ══════════════ */
-function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+function easeOut(t) { return 1 - Math.pow(1-t,4); }
 
 function animateSpin(canvasId, items, labelFn, dur, onDone) {
-  const total = (Math.random() * 8 + 10) * 2 * Math.PI, start = performance.now();
+  const total=(Math.random()*8+10)*2*Math.PI, start=performance.now();
   function frame(now) {
-    const t = Math.min((now - start) / dur, 1), a = easeOut(t) * total;
+    const t=Math.min((now-start)/dur,1), a=easeOut(t)*total;
     drawWheelCore(canvasId, items, labelFn, a);
-    if (t < 1) requestAnimationFrame(frame); else onDone(a);
+    if (t<1) requestAnimationFrame(frame); else onDone(a);
   }
   requestAnimationFrame(frame);
 }
 
 function lockBtns(v) {
-  spinning = v;
-  ['btnRoll', 'btnTopic', 'btnBoth'].forEach(id => document.getElementById(id).disabled = v);
+  spinning=v;
+  ['btnRoll','btnTopic','btnBoth'].forEach(id=>document.getElementById(id).disabled=v);
 }
 
 function spinRoll() {
-  if (!activeRolls.length) { toast('🎉 No more students!', 'info'); return; }
+  if (!activeRolls.length) { toast('🎉 No more students!','info'); return; }
   if (spinning) return;
-  lockBtns(true); pendingRoll = null; updateResult();
-  const idx = Math.floor(Math.random() * activeRolls.length);
-  gmCountdown(() => {
-    if (gameModeOn) { const c = document.getElementById('rollWheel'); c.classList.add('shake'); setTimeout(() => c.classList.remove('shake'), 450); }
-    animateSpin('rollWheel', activeRolls, s => s.rollNo, 5000, () => {
-      pendingRoll = activeRolls[idx]; lockBtns(false);
-      if (gameModeOn && pendingTopic) showWinnerOverlay();
-      else { updateResult(); drawRollWheel(); }
+  lockBtns(true); pendingRoll=null; updateResult();
+  const idx=Math.floor(Math.random()*activeRolls.length);
+  gmCountdown(()=>{
+    if(gameModeOn){const c=document.getElementById('rollWheel');c.classList.add('shake');setTimeout(()=>c.classList.remove('shake'),450);}
+    animateSpin('rollWheel', activeRolls, s=>s.rollNo, 5000, ()=>{
+      pendingRoll=activeRolls[idx]; lockBtns(false);
+      if(gameModeOn&&pendingTopic) showWinnerOverlay(); else { updateResult(); drawRollWheel(); }
     });
   });
 }
 
 function spinTopic() {
-  if (!activeTopics.length) { toast('📝 No topics available', 'info'); return; }
+  if (!activeTopics.length) { toast('📝 No topics available','info'); return; }
   if (spinning) return;
-  lockBtns(true); pendingTopic = null; updateResult();
-  const idx = Math.floor(Math.random() * activeTopics.length);
-  gmCountdown(() => {
-    if (gameModeOn) { const c = document.getElementById('topicWheel'); c.classList.add('shake'); setTimeout(() => c.classList.remove('shake'), 450); }
-    animateSpin('topicWheel', activeTopics, t => `#${t.topicNo} ${t.topicName}`, 4500, () => {
-      pendingTopic = activeTopics[idx]; lockBtns(false);
-      if (gameModeOn && pendingRoll) showWinnerOverlay();
-      else { updateResult(); drawTopicWheel(); }
+  lockBtns(true); pendingTopic=null; updateResult();
+  const idx=Math.floor(Math.random()*activeTopics.length);
+  gmCountdown(()=>{
+    if(gameModeOn){const c=document.getElementById('topicWheel');c.classList.add('shake');setTimeout(()=>c.classList.remove('shake'),450);}
+    animateSpin('topicWheel', activeTopics, t=>`#${t.topicNo} ${t.topicName}`, 4500, ()=>{
+      pendingTopic=activeTopics[idx]; lockBtns(false);
+      if(gameModeOn&&pendingRoll) showWinnerOverlay(); else { updateResult(); drawTopicWheel(); }
     });
   });
 }
 
 function spinBoth() {
-  if (!activeRolls.length) { toast('🎉 No more students!', 'info'); return; }
-  if (!activeTopics.length) { toast('📝 No topics!', 'info'); return; }
+  if (!activeRolls.length) { toast('🎉 No more students!','info'); return; }
+  if (!activeTopics.length) { toast('📝 No topics!','info'); return; }
   if (spinning) return;
-  lockBtns(true); pendingRoll = null; pendingTopic = null; updateResult();
-  const ri = Math.floor(Math.random() * activeRolls.length);
-  const ti = Math.floor(Math.random() * activeTopics.length);
-  let rD = false, tD = false;
-  const check = () => {
-    if (rD && tD) {
-      lockBtns(false);
-      if (gameModeOn) showWinnerOverlay(); else updateResult();
-    }
-  };
-  gmCountdown(() => {
-    if (gameModeOn) {
-      ['rollWheel', 'topicWheel'].forEach(id => { const c = document.getElementById(id); c.classList.add('shake'); setTimeout(() => c.classList.remove('shake'), 450); });
-    }
-    animateSpin('rollWheel', activeRolls, s => s.rollNo, 5000, () => {
-      pendingRoll = activeRolls[ri]; drawRollWheel(); rD = true; check();
+  lockBtns(true); pendingRoll=null; pendingTopic=null; updateResult();
+  const ri=Math.floor(Math.random()*activeRolls.length);
+  const ti=Math.floor(Math.random()*activeTopics.length);
+  let rD=false, tD=false;
+  const check=()=>{ if(rD&&tD){ lockBtns(false); if(gameModeOn) showWinnerOverlay(); else updateResult(); }};
+  gmCountdown(()=>{
+    if(gameModeOn){['rollWheel','topicWheel'].forEach(id=>{const c=document.getElementById(id);c.classList.add('shake');setTimeout(()=>c.classList.remove('shake'),450);});}
+    animateSpin('rollWheel', activeRolls, s=>s.rollNo, 5000, ()=>{
+      pendingRoll=activeRolls[ri]; drawRollWheel(); rD=true; check();
     });
-    animateSpin('topicWheel', activeTopics, t => `#${t.topicNo} ${t.topicName}`, 4500, () => {
-      pendingTopic = activeTopics[ti]; drawTopicWheel(); tD = true; check();
+    animateSpin('topicWheel', activeTopics, t=>`#${t.topicNo} ${t.topicName}`, 4500, ()=>{
+      pendingTopic=activeTopics[ti]; drawTopicWheel(); tD=true; check();
     });
   });
 }
 
 function updateResult() {
-  const picks = document.getElementById('rpicks');
-  const cBtn  = document.getElementById('confirmBtn');
-  const card  = document.getElementById('resultCard');
-  if (!pendingRoll && !pendingTopic) {
-    picks.innerHTML = '<span class="rph">Spin the wheels to pick a student & topic…</span>';
-    cBtn.style.display = 'none'; card.classList.remove('live'); return;
-  }
-  let html = '';
-  if (pendingRoll)
-    html += `<div class="rpick"><span class="rlbl rl-r">Student</span><span class="rval">${pendingRoll.rollNo} · ${pendingRoll.name}</span></div>`;
-  if (pendingTopic)
-    html += `<div class="rpick"><span class="rlbl rl-t">Topic</span><span class="rval">#${pendingTopic.topicNo} ${pendingTopic.topicName}</span></div>`;
-  picks.innerHTML = html;
-  if (pendingRoll && pendingTopic) {
-    cBtn.style.display = 'flex'; card.classList.add('live');
-    launchConfetti(gameModeOn ? 120 : 60);
-    if (document.getElementById('timerCard').classList.contains('open')) { resetTimer(); startTimer(); }
-  } else {
-    cBtn.style.display = 'none'; card.classList.remove('live');
-  }
+  const picks=document.getElementById('rpicks'), cBtn=document.getElementById('confirmBtn'), card=document.getElementById('resultCard');
+  if(!pendingRoll&&!pendingTopic){ picks.innerHTML='<span class="rph">Spin the wheels to pick a student & topic…</span>'; cBtn.style.display='none'; card.classList.remove('live'); return; }
+  let html='';
+  if(pendingRoll) html+=`<div class="rpick"><span class="rlbl rl-r">Student</span><span class="rval">${pendingRoll.rollNo} · ${pendingRoll.name}</span></div>`;
+  if(pendingTopic) html+=`<div class="rpick"><span class="rlbl rl-t">Topic</span><span class="rval">#${pendingTopic.topicNo} ${pendingTopic.topicName}</span></div>`;
+  picks.innerHTML=html;
+  if(pendingRoll&&pendingTopic){
+    cBtn.style.display='flex'; card.classList.add('live');
+    launchConfetti(gameModeOn?120:60);
+    if(document.getElementById('timerCard').classList.contains('open')){ resetTimer(); startTimer(); }
+  } else { cBtn.style.display='none'; card.classList.remove('live'); }
 }
 
-/* ════ GAME MODE COUNTDOWN ════ */
+/* ════ GAME MODE ════ */
 function gmCountdown(cb) {
   if (!gameModeOn) { cb(); return; }
-  const el = document.getElementById('gmCountdown');
-  const num = document.getElementById('gmCountNum');
-  el.classList.add('show');
-  let n = 3; num.textContent = n;
-  num.className = 'gm-count-num';
-  const iv = setInterval(() => {
+  const el=document.getElementById('gmCountdown'), num=document.getElementById('gmCountNum');
+  el.classList.add('show'); let n=3; num.textContent=n; num.className='gm-count-num';
+  const iv=setInterval(()=>{
     n--;
-    if (n > 0) {
-      num.textContent = n;
-      num.style.animation = 'none'; void num.offsetWidth;
-      num.style.animation = 'countPop .65s cubic-bezier(.34,1.56,.64,1)';
-    } else {
-      num.textContent = 'GO!'; num.className = 'gm-count-go';
-      num.style.animation = 'none'; void num.offsetWidth;
-      num.style.animation = 'countPop .45s cubic-bezier(.34,1.56,.64,1)';
-      clearInterval(iv);
-      setTimeout(() => { el.classList.remove('show'); num.className = 'gm-count-num'; cb(); }, 650);
-    }
-  }, 700);
+    if(n>0){ num.textContent=n; num.style.animation='none'; void num.offsetWidth; num.style.animation='countPop .65s cubic-bezier(.34,1.56,.64,1)'; }
+    else { num.textContent='GO!'; num.className='gm-count-go'; num.style.animation='none'; void num.offsetWidth; num.style.animation='countPop .45s cubic-bezier(.34,1.56,.64,1)';
+      clearInterval(iv); setTimeout(()=>{ el.classList.remove('show'); num.className='gm-count-num'; cb(); }, 650); }
+  },700);
 }
 
-/* ════ WINNER OVERLAY ════ */
 function showWinnerOverlay() {
-  if (!pendingRoll || !pendingTopic) return;
-  document.getElementById('wRoll').textContent = pendingRoll.rollNo;
-  document.getElementById('wName').textContent = pendingRoll.name || '';
-  document.getElementById('wTopic').textContent = 'Topic #' + pendingTopic.topicNo + ': ' + pendingTopic.topicName;
+  if (!pendingRoll||!pendingTopic) return;
+  document.getElementById('wRoll').textContent=pendingRoll.rollNo;
+  document.getElementById('wName').textContent=pendingRoll.name||'';
+  document.getElementById('wTopic').textContent='Topic #'+pendingTopic.topicNo+': '+pendingTopic.topicName;
   document.getElementById('winnerOverlay').classList.add('show');
   launchConfetti(150); playChime();
 }
-function closeWinner() {
-  document.getElementById('winnerOverlay').classList.remove('show');
-  updateResult();
-}
-function confirmPickFromWinner() {
-  document.getElementById('winnerOverlay').classList.remove('show');
-  updateResult(); openCommentPanel();
-}
+function closeWinner() { document.getElementById('winnerOverlay').classList.remove('show'); updateResult(); }
+function confirmPickFromWinner() { document.getElementById('winnerOverlay').classList.remove('show'); updateResult(); openCommentPanel(); }
 
-/* ════ GAME MODE TOGGLE ════ */
 function toggleGameMode() {
-  gameModeOn = !gameModeOn;
-  document.body.classList.toggle('game-mode', gameModeOn);
-  const btn    = document.getElementById('gmBtn');
-  const btnMob = document.getElementById('gmBtnMob');
-  const label = gameModeOn ? '🌙 Normal Mode' : '🎮 Game Mode';
-  btn.textContent    = label;
-  btnMob.textContent = gameModeOn ? '🌙' : '🎮';
-  if (gameModeOn) { initParticles(); toast('🎮 Game Mode ON!', 'info'); playChime(); }
-  else { stopParticles(); toast('Normal mode restored', 'info'); }
+  gameModeOn=!gameModeOn; document.body.classList.toggle('game-mode',gameModeOn);
+  const btn=document.getElementById('gmBtn'), btnMob=document.getElementById('gmBtnMob');
+  const label=gameModeOn?'🌙 Normal Mode':'🎮 Game Mode';
+  btn.textContent=label; btnMob.textContent=gameModeOn?'🌙':'🎮';
+  if(gameModeOn){initParticles();toast('🎮 Game Mode ON!','info');playChime();}
+  else{stopParticles();toast('Normal mode restored','info');}
   drawRollWheel(); drawTopicWheel();
 }
 
-/* ════ PARTICLES ════ */
 function initParticles() {
-  const cv = document.getElementById('particleCanvas');
-  cv.width = window.innerWidth; cv.height = window.innerHeight;
-  const ctx = cv.getContext('2d');
-  particles = Array.from({ length: 60 }, () => ({
-    x: Math.random() * cv.width, y: Math.random() * cv.height,
-    vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
-    r: Math.random() * 2.2 + .8,
-    col: ['#FF6B6B','#7950F2','#339AF0','#20C997','#FFD43B','#F06595'][Math.floor(Math.random() * 6)],
-    alpha: Math.random() * .5 + .15
+  const cv=document.getElementById('particleCanvas');
+  cv.width=window.innerWidth; cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  particles=Array.from({length:60},()=>({
+    x:Math.random()*cv.width, y:Math.random()*cv.height,
+    vx:(Math.random()-.5)*.45, vy:(Math.random()-.5)*.45,
+    r:Math.random()*2.2+.8,
+    col:['#FF6B6B','#7950F2','#339AF0','#20C997','#FFD43B','#F06595'][Math.floor(Math.random()*6)],
+    alpha:Math.random()*.5+.15
   }));
   function loop() {
-    if (!gameModeOn) return;
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > cv.width) p.vx *= -1;
-      if (p.y < 0 || p.y > cv.height) p.vy *= -1;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.col; ctx.globalAlpha = p.alpha; ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-    particles.forEach((p, i) => {
-      for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j], d = Math.hypot(p.x - q.x, p.y - q.y);
-        if (d < 130) {
-          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-          ctx.strokeStyle = 'rgba(94,53,177,' + (0.13 * (1 - d / 130)) + ')';
-          ctx.lineWidth = .7; ctx.stroke();
-        }
-      }
-    });
-    particleRAF = requestAnimationFrame(loop);
+    if(!gameModeOn) return;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>cv.width)p.vx*=-1; if(p.y<0||p.y>cv.height)p.vy*=-1; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col;ctx.globalAlpha=p.alpha;ctx.fill(); });
+    ctx.globalAlpha=1;
+    particles.forEach((p,i)=>{ for(let j=i+1;j<particles.length;j++){const q=particles[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(94,53,177,'+(0.13*(1-d/130))+')';ctx.lineWidth=.7;ctx.stroke();}} });
+    particleRAF=requestAnimationFrame(loop);
   }
   loop();
 }
 function stopParticles() {
-  if (particleRAF) cancelAnimationFrame(particleRAF);
-  const c = document.getElementById('particleCanvas');
-  c.getContext('2d').clearRect(0, 0, c.width, c.height);
+  if(particleRAF) cancelAnimationFrame(particleRAF);
+  const c=document.getElementById('particleCanvas'); c.getContext('2d').clearRect(0,0,c.width,c.height);
 }
 
-/* ════ CHIME ════ */
 function playChime() {
   try {
-    const AC = new (window.AudioContext || window.webkitAudioContext)();
-    [523, 659, 784, 1047].forEach((f, i) => {
-      const o = AC.createOscillator(), g = AC.createGain();
-      o.connect(g); g.connect(AC.destination); o.type = 'sine'; o.frequency.value = f;
-      g.gain.setValueAtTime(0, AC.currentTime + i * .1);
-      g.gain.linearRampToValueAtTime(.16, AC.currentTime + i * .1 + .02);
-      g.gain.exponentialRampToValueAtTime(.001, AC.currentTime + i * .1 + .28);
-      o.start(AC.currentTime + i * .1); o.stop(AC.currentTime + i * .1 + .32);
+    const AC=new(window.AudioContext||window.webkitAudioContext)();
+    [523,659,784,1047].forEach((f,i)=>{
+      const o=AC.createOscillator(),g=AC.createGain();
+      o.connect(g);g.connect(AC.destination);o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0,AC.currentTime+i*.1);
+      g.gain.linearRampToValueAtTime(.16,AC.currentTime+i*.1+.02);
+      g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+i*.1+.28);
+      o.start(AC.currentTime+i*.1);o.stop(AC.currentTime+i*.1+.32);
     });
   } catch(e) {}
 }
 
-/* ══════════════════════════════════════════════════
-   REPORT GENERATION
-══════════════════════════════════════════════════ */
-async function loadReportData() {
-  toast('Loading report data…', 'info');
-  await loadStudents(); await loadHistory(); await loadTopics();
-  toast('✅ Data loaded!', 'success');
-}
-
-function buildReportHTML() {
-  const o = {
-    stats:    document.getElementById('ropt1').checked,
-    fullList: document.getElementById('ropt2').checked,
-    topics:   document.getElementById('ropt3').checked,
-    remarks:  document.getElementById('ropt4').checked,
-    slog:     document.getElementById('ropt5').checked,
-    pending:  document.getElementById('ropt6').checked
-  };
-  const now = new Date();
-  const ds = now.toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
-  const ts = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-  const total = allStudents.length, done = doneRolls.length, pend = activeRolls.length;
-  const pct = total ? Math.round(done / total * 100) : 0;
-  let h = `
-    <div class="rp-header">
-      <div class="rp-title">🎤 Extempore Speech Report</div>
-      <div class="rp-sub">Class Performance Report</div>
-      <div class="rp-meta">
-        <span>📅 ${ds} ${ts}</span>
-        ${currentYear ? `<span>🎓 ${currentYear}</span>` : ''}
-        ${currentSection ? `<span>🏷 ${currentSection}</span>` : ''}
-        <span>👤 ${facultyName}</span>
-      </div>
-    </div>`;
-  if (o.stats) {
-    h += `<div class="rp-section">
-      <div class="rp-section-title">📊 Summary</div>
-      <div class="rp-stat-grid">
-        <div class="rp-stat"><span class="n" style="color:#d9481a">${total}</span><span class="l">Total</span></div>
-        <div class="rp-stat"><span class="n" style="color:#1e9e5c">${done}</span><span class="l">Done</span></div>
-        <div class="rp-stat"><span class="n" style="color:#d9481a">${pend}</span><span class="l">Pending</span></div>
-        <div class="rp-stat"><span class="n" style="color:#1a5fb4">${pct}%</span><span class="l">Progress</span></div>
-      </div>
-      <div class="rp-progress-bar"><div class="rp-progress-fill" style="width:${pct}%"></div></div>
-      <p style="text-align:center;color:#7a6e62;font-size:.76rem;margin-top:8px">${done} / ${total} students completed</p>
-    </div>`;
-  }
-  if (o.fullList && allStudents.length) {
-    h += `<div class="rp-section">
-      <div class="rp-section-title">📋 All Students (${total})</div>
-      <table class="rp-table"><thead><tr>
-        <th>#</th><th>Roll No</th><th>Name</th><th>Status</th><th>Topic</th><th>Date</th>${o.remarks ? '<th>Remarks</th>' : ''}
-      </tr></thead><tbody>
-      ${allStudents.map((s, i) => `<tr>
-        <td>${i + 1}</td>
-        <td style="font-family:monospace;font-weight:700">${s.rollNo}</td>
-        <td>${s.name || '–'}</td>
-        <td class="${s.status === 'Completed' ? 'rp-done' : 'rp-pending'}">${s.status === 'Completed' ? '✓ Done' : '⏳ Pending'}</td>
-        <td>${s.topicNo ? '#' + s.topicNo : '–'}</td>
-        <td style="font-family:monospace">${s.speechDate || '–'}</td>
-        ${o.remarks ? `<td class="rp-comment">${s.comments || '–'}</td>` : ''}
-      </tr>`).join('')}
-      </tbody></table>
-    </div>`;
-  }
-  if (o.pending && activeRolls.length) {
-    h += `<div class="rp-section">
-      <div class="rp-section-title">⏳ Pending Students (${activeRolls.length})</div>
-      <table class="rp-table"><thead><tr><th>#</th><th>Roll No</th><th>Name</th></tr></thead><tbody>
-      ${activeRolls.map((s, i) => `<tr><td>${i + 1}</td><td style="font-family:monospace;font-weight:700">${s.rollNo}</td><td>${s.name || '–'}</td></tr>`).join('')}
-      </tbody></table>
-    </div>`;
-  }
-  if (o.topics && allTopics.length) {
-    h += `<div class="rp-section">
-      <div class="rp-section-title">📝 Topics (${allTopics.length})</div>
-      <table class="rp-table"><thead><tr><th>#</th><th>Name</th><th>Added</th><th>Used</th><th>Year</th><th>Section</th></tr></thead><tbody>
-      ${allTopics.map(t => `<tr>
-        <td style="font-family:monospace">${t.topicNo}</td>
-        <td style="font-weight:600">${t.topicName}</td>
-        <td style="font-family:monospace">${t.addedDate || '–'}</td>
-        <td style="text-align:center">${t.usedCount || 0}</td>
-        <td>${t.year || '–'}</td><td>${t.section || '–'}</td>
-      </tr>`).join('')}
-      </tbody></table>
-    </div>`;
-  }
-  if (o.slog && sessionLog.length) {
-    h += `<div class="rp-section">
-      <div class="rp-section-title">📅 Session Log (${sessionLog.length})</div>
-      <table class="rp-table"><thead><tr>
-        <th>#</th><th>Roll No</th><th>Name</th><th>Topic</th><th>Date</th><th>Faculty</th>${o.remarks ? '<th>Remarks</th>' : ''}
-      </tr></thead><tbody>
-      ${sessionLog.map((h2, i) => `<tr>
-        <td>${sessionLog.length - i}</td>
-        <td style="font-family:monospace;font-weight:700;color:#d9481a">${h2.rollNo}</td>
-        <td>${h2.name || '–'}</td>
-        <td>#${h2.topicNo} ${h2.topicName || ''}</td>
-        <td style="font-family:monospace">${h2.speechDate || ''}</td>
-        <td>${h2.faculty || ''}</td>
-        ${o.remarks ? `<td class="rp-comment">${h2.comments || '–'}</td>` : ''}
-      </tr>`).join('')}
-      </tbody></table>
-    </div>`;
-  }
-  h += `<div style="text-align:center;margin-top:28px;padding-top:14px;border-top:1px solid #e4ddd2;font-size:.68rem;color:#a89e92">
-    Extempore Speech Picker · ${ds} ${ts} · ${facultyName}
-  </div>`;
-  return h;
-}
-
-function previewReport() {
-  if (!allStudents.length) { toast('Click 🔄 Load Data first', 'info'); return; }
-  document.getElementById('reportPreviewBox').innerHTML = buildReportHTML();
-  const pa = document.getElementById('reportPreviewArea');
-  pa.style.display = 'block';
-  pa.scrollIntoView({ behavior: 'smooth' });
-  toast('Preview ready!', 'success');
-}
-
-function generatePrintReport() {
-  if (!allStudents.length) { toast('Click 🔄 Load Data first', 'info'); return; }
-  const html = buildReportHTML();
-  const w = window.open('', '_blank', 'width=960,height=750');
-  w.document.write(`<!DOCTYPE html><html><head>
-    <title>Extempore Report — ${currentSection} ${currentYear}</title>
-    <style>
-      *{box-sizing:border-box;margin:0;padding:0}
-      body{font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1510;padding:24px 32px;max-width:920px;margin:0 auto}
-      .rp-header{text-align:center;border-bottom:3px solid #d9481a;padding-bottom:16px;margin-bottom:24px}
-      .rp-title{font-size:1.9rem;font-weight:800;color:#1a1510;font-family:Georgia,serif}
-      .rp-sub{font-size:.9rem;color:#7a6e62;margin-top:6px}
-      .rp-meta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:.76rem;color:#7a6e62}
-      .rp-meta span{background:#f4efe8;border:1px solid #e2d9cd;padding:3px 12px;border-radius:20px}
-      .rp-section{margin-bottom:28px}
-      .rp-section-title{font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#d9481a;border-bottom:2px solid #e4ddd2;padding-bottom:7px;margin-bottom:14px}
-      .rp-progress-bar{height:12px;background:#e4ddd2;border-radius:7px;overflow:hidden;margin:10px 0}
-      .rp-progress-fill{height:100%;background:linear-gradient(90deg,#d9481a,#c2185b,#1a5fb4);border-radius:7px}
-      .rp-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-      .rp-stat{background:#f4efe8;border:1px solid #e2d9cd;border-radius:12px;padding:14px;text-align:center}
-      .rp-stat .n{font-size:1.8rem;font-weight:700;display:block;font-family:monospace}
-      .rp-stat .l{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a6e62;display:block;margin-top:4px}
-      table{width:100%;border-collapse:collapse;font-size:.8rem}
-      th{background:#d9481a;color:#fff;padding:8px 10px;text-align:left;font-size:.7rem;letter-spacing:.06em}
-      td{padding:7px 10px;border-bottom:1px solid #e4ddd2}
-      tr:nth-child(even) td{background:#faf7f3}
-      .rp-done{color:#1e9e5c;font-weight:700}
-      .rp-pending{color:#d9481a;font-weight:700}
-      .rp-comment{font-style:italic;color:#7a6e62;font-size:.74rem}
-      .print-btn{background:#d9481a;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-right:8px}
-      .close-btn{background:#f4efe8;border:1px solid #e2d9cd;padding:10px 18px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer}
-      @media print{.no-print{display:none!important}}
-    </style>
-  </head><body>
-  <div class="no-print" style="text-align:right;margin-bottom:18px">
-    <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
-    <button class="close-btn" onclick="window.close()">✕ Close</button>
-  </div>
-  ${html}
-  </body></html>`);
-  w.document.close();
-  toast('🖨 Report opened!', 'success');
-}
-
 /* ══════════════ COMMENT & CONFIRM ══════════════ */
 function openCommentPanel() {
-  if (!pendingRoll || !pendingTopic) return;
-  const p = document.getElementById('commentPanel');
-  document.getElementById('cpStudent').textContent = `${pendingRoll.rollNo} — ${pendingRoll.name}  |  Topic #${pendingTopic.topicNo}: ${pendingTopic.topicName}`;
-  document.getElementById('cpInput').value = '';
-  p.classList.add('open');
-  document.getElementById('cpInput').focus();
+  if (!pendingRoll||!pendingTopic) return;
+  const p=document.getElementById('commentPanel');
+  document.getElementById('cpStudent').textContent=`${pendingRoll.rollNo} — ${pendingRoll.name}  |  Topic #${pendingTopic.topicNo}: ${pendingTopic.topicName}`;
+  document.getElementById('cpInput').value=''; p.classList.add('open'); document.getElementById('cpInput').focus();
 }
 
 async function confirmPick() {
-  if (!pendingRoll || !pendingTopic) return;
-  const comment = document.getElementById('cpInput').value.trim();
-  const btn = document.querySelector('#commentPanel .btn-sage');
-  const orig = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner"></span> Saving…'; btn.disabled = true;
+  if (!pendingRoll||!pendingTopic) return;
+  const comment=document.getElementById('cpInput').value.trim();
+  const btn=document.querySelector('#commentPanel .btn-sage'), orig=btn.innerHTML;
+  btn.innerHTML='<span class="spinner"></span> Saving…'; btn.disabled=true;
   try {
-    await api("confirmPick", {
-      rollNo:    pendingRoll.rollNo,
-      topicNo:   pendingTopic.topicNo,
-      topicName: pendingTopic.topicName,
-      comments:  comment,
-      faculty:   facultyName,
-      year:      currentYear,
-      section:   currentSection
-    });
-    activeRolls  = activeRolls.filter(s => s.rollNo !== pendingRoll.rollNo);
-    doneRolls.push({ ...pendingRoll, status:"Completed", comments:comment, speechDate:new Date().toLocaleDateString('en-IN') });
-    allStudents  = allStudents.map(s => s.rollNo === pendingRoll.rollNo ? { ...s, status:"Completed", comments:comment } : s);
-    activeTopics = activeTopics.filter(t => t.topicNo !== pendingTopic.topicNo);
+    await api("confirmPick",{rollNo:pendingRoll.rollNo,topicNo:pendingTopic.topicNo,topicName:pendingTopic.topicName,comments:comment,faculty:facultyName,year:currentYear,section:currentSection});
+    activeRolls=activeRolls.filter(s=>s.rollNo!==pendingRoll.rollNo);
+    doneRolls.push({...pendingRoll,status:"Completed",comments:comment,speechDate:new Date().toLocaleDateString('en-IN')});
+    allStudents=allStudents.map(s=>s.rollNo===pendingRoll.rollNo?{...s,status:"Completed",comments:comment}:s);
+    activeTopics=activeTopics.filter(t=>t.topicNo!==pendingTopic.topicNo);
     sessionStreak++;
-    const sb = document.getElementById('streakBanner');
-    if (sessionStreak >= 3) {
-      document.getElementById('streakText').textContent = sessionStreak + ' in a row! 🔥';
-      sb.classList.add('on');
-    }
-    sessionLog.unshift({
-      rollNo: pendingRoll.rollNo, name: pendingRoll.name,
-      topicNo: pendingTopic.topicNo, topicName: pendingTopic.topicName,
-      comments: comment, faculty: facultyName,
-      speechDate: new Date().toLocaleDateString('en-IN'),
-      timestamp: new Date().toLocaleString('en-IN')
-    });
-    toast(`✅ ${pendingRoll.rollNo} marked Completed!`, 'success');
-    pendingRoll = null; pendingTopic = null;
+    const sb=document.getElementById('streakBanner');
+    if(sessionStreak>=3){document.getElementById('streakText').textContent=sessionStreak+' in a row! 🔥';sb.classList.add('on');}
+    sessionLog.unshift({rollNo:pendingRoll.rollNo,name:pendingRoll.name,topicNo:pendingTopic.topicNo,topicName:pendingTopic.topicName,comments:comment,faculty:facultyName,speechDate:new Date().toLocaleDateString('en-IN'),timestamp:new Date().toLocaleString('en-IN')});
+    toast(`✅ ${pendingRoll.rollNo} marked Completed!`,'success');
+    pendingRoll=null; pendingTopic=null;
     document.getElementById('commentPanel').classList.remove('open');
     document.getElementById('resultCard').classList.remove('live');
-    document.getElementById('rpicks').innerHTML = '<span class="rph">Spin the wheels to pick a student & topic…</span>';
-    document.getElementById('confirmBtn').style.display = 'none';
+    document.getElementById('rpicks').innerHTML='<span class="rph">Spin the wheels to pick a student & topic…</span>';
+    document.getElementById('confirmBtn').style.display='none';
     drawRollWheel(); drawTopicWheel(); updateStats(); renderStudents(); renderHistory();
-  } catch(e) { toast('⚠ ' + e.message, 'error'); }
-  btn.innerHTML = orig; btn.disabled = false;
+    if(fsVisible) closeFsTimer();
+  } catch(e) { toast('⚠ '+e.message,'error'); }
+  btn.innerHTML=orig; btn.disabled=false;
 }
 
-function skipComment() {
-  document.getElementById('commentPanel').classList.remove('open');
-}
+function skipComment() { document.getElementById('commentPanel').classList.remove('open'); }
 
 /* ══════════════ TOPICS CRUD ══════════════ */
 async function addTopic() {
-  const name = document.getElementById('topicNameIn').value.trim();
-  const year  = document.getElementById('topicYearIn').value;
-  const sec   = document.getElementById('topicSecIn').value;
-  if (!name) { toast('Enter a topic name', 'error'); return; }
-  try {
-    await api("addTopic", { topicName: name, year, section: sec });
-    document.getElementById('topicNameIn').value = '';
-    await loadTopics();
-    toast('📝 Topic added!', 'success');
-  } catch(e) { toast('⚠ ' + e.message, 'error'); }
+  const name=document.getElementById('topicNameIn').value.trim(), year=document.getElementById('topicYearIn').value, sec=document.getElementById('topicSecIn').value;
+  if (!name) { toast('Enter a topic name','error'); return; }
+  try { await api("addTopic",{topicName:name,year,section:sec}); document.getElementById('topicNameIn').value=''; await loadTopics(); toast('📝 Topic added!','success'); }
+  catch(e) { toast('⚠ '+e.message,'error'); }
 }
 
 function renderTopicList() {
-  const el = document.getElementById('topicList');
-  if (!allTopics.length) { el.innerHTML = '<div class="no-topics">No topics yet. Add one above.</div>'; return; }
-  el.innerHTML = allTopics.map(t => `
-    <div class="topic-item">
-      <span class="tn">#${t.topicNo}</span>
-      <span class="tname">${t.topicName}</span>
-      <div class="tmeta">
-        ${t.addedDate ? `<span class="ttag date">📅 ${t.addedDate}</span>` : ''}
-        ${t.year ? `<span class="ttag">${t.year}</span>` : ''}
-        ${t.section ? `<span class="ttag">${t.section}</span>` : ''}
-        ${(t.usedCount > 0) ? `<span class="ttag used">Used ${t.usedCount}×</span>` : ''}
-      </div>
-    </div>`).join('');
+  const el=document.getElementById('topicList');
+  if (!allTopics.length) { el.innerHTML='<div class="no-topics">No topics yet. Add one above.</div>'; return; }
+  el.innerHTML=allTopics.map(t=>`<div class="topic-item">
+    <span class="tn">#${t.topicNo}</span>
+    <span class="tname">${t.topicName}</span>
+    <div class="tmeta">
+      ${t.addedDate?`<span class="ttag date">📅 ${t.addedDate}</span>`:''}
+      ${t.year?`<span class="ttag">${t.year}</span>`:''}
+      ${t.section?`<span class="ttag">${t.section}</span>`:''}
+      ${(t.usedCount>0)?`<span class="ttag used">Used ${t.usedCount}×</span>`:''}
+    </div>
+  </div>`).join('');
 }
 
 /* ══════════════ STUDENTS PAGE ══════════════ */
 function setTab(tab, el) {
-  studentTab = tab;
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  el.classList.add('active'); renderStudents();
+  studentTab=tab; document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderStudents();
 }
 
 function renderStudents() {
-  const q = document.getElementById('searchIn').value.toLowerCase();
-  let list = studentTab === 'active' ? activeRolls
-           : studentTab === 'done'   ? doneRolls
-           : allStudents;
-  if (q) list = list.filter(s => s.rollNo.toLowerCase().includes(q) || s.name.toLowerCase().includes(q));
-  const g = document.getElementById('studentsGrid');
-  if (!list.length) { g.innerHTML = '<div class="empty-st">No students found.</div>'; return; }
-  g.innerHTML = list.map(s => {
+  const q=document.getElementById('searchIn').value.toLowerCase();
+  // "active" tab = Not Completed (status !== "Completed", includes empty/new rows)
+  let list = studentTab==='active' ? activeRolls : studentTab==='done' ? doneRolls : allStudents;
+  if (q) list=list.filter(s=>s.rollNo.toLowerCase().includes(q)||s.name.toLowerCase().includes(q));
+  list=sortList(list);
+  const g=document.getElementById('studentsGrid');
+  if (!list.length) { g.innerHTML='<div class="empty-st">No students found.</div>'; return; }
+  g.innerHTML=list.map(s=>{
+    // Backend: "Completed" or "Not Completed" (or empty = not completed)
     const done = s.status === 'Completed';
-    return `<div class="sc ${done ? 'completed' : ''}">
+    const safeRoll = s.rollNo.replace(/'/g, "\\'");
+    const safeName = (s.name||'').replace(/'/g, "\\'");
+    return `<div class="sc ${done?'completed':''}">
       <div class="sc-sno">S.No ${s.sno}</div>
       <div class="srn">${s.rollNo}</div>
-      <div class="sname" title="${s.name}">${s.name}</div>
-      <span class="sstatus ${done ? 'done' : 'pending'}">${done ? '✓ Done' : 'Pending'}</span>
-      ${done ? `<div class="sc-date">📅 ${s.speechDate}</div>` : ''}
-      ${done && s.comments ? `<div class="sc-date" style="color:var(--ink3);font-style:italic;font-size:.62rem">"${s.comments.substring(0, 40)}${s.comments.length > 40 ? '…' : ''}"</div>` : ''}
+      <div class="sname" title="${s.name||''}">${s.name||''}</div>
+      <span class="sstatus ${done?'done':'pending'}">${done?'✓ Completed':'Not Completed'}</span>
+      ${done?`<div class="sc-date">📅 ${s.speechDate||''}</div>`:''}
+      ${done&&s.comments?`<div class="sc-date" style="color:var(--ink3);font-style:italic;font-size:.62rem">"${s.comments.substring(0,40)}${s.comments.length>40?'…':''}"</div>`:''}
+      <!-- Status Toggle: OFF = Not Completed, ON = Completed -->
+      <div class="status-toggle-wrap" title="${done?'Toggle OFF to mark Not Completed':'Toggle ON to mark Completed'}">
+        <label class="status-toggle" onclick="event.stopPropagation()">
+          <input type="checkbox" ${done?'checked':''} onchange="toggleStudentStatus('${safeRoll}','${s.status}')">
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="status-toggle-lbl" style="color:${done?'var(--sage)':'var(--coral)'};font-weight:700">${done?'✓ Done':'Not Done'}</span>
+      </div>
       <div class="scact">
-        ${!done ? `<button class="scbtn done-btn" onclick="quickMarkDone('${s.rollNo}','${s.name}')">✓ Done</button>` : ''}
-        <button class="scbtn edit-btn" onclick="editComment('${s.rollNo}','${s.name}')">💬 Remark</button>
+        <button class="scbtn edit-btn" onclick="editComment('${safeRoll}','${safeName}')">💬 Remark</button>
       </div>
     </div>`;
   }).join('');
 }
 
 async function addStudent() {
-  const roll = document.getElementById('addRollIn').value.trim();
-  const name = document.getElementById('addNameIn').value.trim();
-  if (!roll || !name) { toast('Roll No and Name required', 'error'); return; }
+  const roll=document.getElementById('addRollIn').value.trim(), name=document.getElementById('addNameIn').value.trim();
+  if (!roll||!name) { toast('Roll No and Name required','error'); return; }
   try {
-    await api("addStudent", { rollNo: roll, name, year: currentYear, section: currentSection });
-    document.getElementById('addRollIn').value = '';
-    document.getElementById('addNameIn').value = '';
-    await loadStudents();
-    toast('Student added!', 'success');
-  } catch(e) { toast('⚠ ' + e.message, 'error'); }
+    await api("addStudent",{rollNo:roll,name,year:currentYear,section:currentSection});
+    document.getElementById('addRollIn').value=''; document.getElementById('addNameIn').value='';
+    await loadStudents(); toast('Student added!','success');
+  } catch(e) { toast('⚠ '+e.message,'error'); }
 }
 
 async function quickMarkDone(rollNo, name) {
-  openModal('📝 Remarks for ' + rollNo, `
+  openModal('📝 Remarks for '+rollNo, `
     <div><div class="mlbl">Student</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:12px">${rollNo} · ${name}</div></div>
     <div><div class="mlbl">Faculty Remarks</div>
-    <textarea class="mtextarea" id="qdComment" placeholder="Enter speech remarks / feedback…"></textarea></div>
+    <textarea class="mtextarea" id="qdComment" placeholder="Enter speech remarks…"></textarea></div>
     <div class="mactions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
       <button class="btn btn-sage" onclick="submitQuickDone('${rollNo}')">✅ Save & Mark Done</button>
@@ -1922,26 +1759,19 @@ async function quickMarkDone(rollNo, name) {
 }
 
 async function submitQuickDone(rollNo) {
-  const comment = document.getElementById('qdComment').value.trim();
-  const topic   = activeTopics[0] || { topicNo: '–', topicName: '–' };
+  const comment=document.getElementById('qdComment').value.trim();
+  const topic=activeTopics[0]||{topicNo:'–',topicName:'–'};
   try {
-    await api("confirmPick", {
-      rollNo, topicNo: topic.topicNo, topicName: topic.topicName,
-      comments: comment, faculty: facultyName, year: currentYear, section: currentSection
-    });
-    closeModal();
-    await loadStudents();
-    toast(`✅ ${rollNo} marked Completed!`, 'success');
-  } catch(e) { toast('⚠ ' + e.message, 'error'); }
+    await api("confirmPick",{rollNo,topicNo:topic.topicNo,topicName:topic.topicName,comments:comment,faculty:facultyName,year:currentYear,section:currentSection});
+    closeModal(); await loadStudents(); toast(`✅ ${rollNo} marked Completed!`,'success');
+  } catch(e) { toast('⚠ '+e.message,'error'); }
 }
 
 function editComment(rollNo, name) {
-  const s = allStudents.find(x => x.rollNo === rollNo);
-  openModal('💬 Edit Remarks — ' + rollNo, `
-    <div><div class="mlbl">Student</div>
-    <div style="font-family:var(--fm);font-size:.9rem;font-weight:600;margin-bottom:12px">${rollNo} · ${name}</div></div>
-    <div><div class="mlbl">Remarks</div>
-    <textarea class="mtextarea" id="ecComment" placeholder="Enter remarks…">${s ? s.comments : ''}</textarea></div>
+  const s=allStudents.find(x=>x.rollNo===rollNo);
+  openModal('💬 Edit Remarks — '+rollNo, `
+    <div><div class="mlbl">Student</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;margin-bottom:12px">${rollNo} · ${name}</div></div>
+    <div><div class="mlbl">Remarks</div><textarea class="mtextarea" id="ecComment" placeholder="Enter remarks…">${s?s.comments:''}</textarea></div>
     <div class="mactions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
       <button class="btn btn-amber" onclick="submitEditComment('${rollNo}')">💾 Save Remark</button>
@@ -1949,139 +1779,314 @@ function editComment(rollNo, name) {
 }
 
 async function submitEditComment(rollNo) {
-  const comment = document.getElementById('ecComment').value.trim();
-  try {
-    await api("saveComment", { rollNo, comments: comment });
-    closeModal(); await loadStudents();
-    toast('💬 Remark saved!', 'success');
-  } catch(e) { toast('⚠ ' + e.message, 'error'); }
+  const comment=document.getElementById('ecComment').value.trim();
+  try { await api("saveComment",{rollNo,comments:comment}); closeModal(); await loadStudents(); toast('💬 Remark saved!','success'); }
+  catch(e) { toast('⚠ '+e.message,'error'); }
 }
 
 /* ══════════════ HISTORY ══════════════ */
 function renderHistory() {
-  const el = document.getElementById('histList');
-  if (!sessionLog.length) { el.innerHTML = '<div class="no-hist"><span>📋</span>No session records yet.</div>'; return; }
-  el.innerHTML = sessionLog.map((h, i) => `
-    <div class="hitem">
-      <span class="hnum">${sessionLog.length - i}</span>
-      <div class="hmain">
-        <div class="hroll">${h.rollNo}</div>
-        <div class="hname">${h.name || ''}</div>
-        <span class="htopic">#${h.topicNo} ${h.topicName || ''}</span>
-        ${h.comments ? `<div class="hcomment">"${h.comments}"</div>` : ''}
-      </div>
-      <div class="hright">
-        <div class="hdate">${h.speechDate || ''}</div>
-        <div class="hfac">${h.faculty || ''}</div>
-      </div>
-    </div>`).join('');
+  const el=document.getElementById('histList');
+  if (!sessionLog.length) { el.innerHTML='<div class="no-hist"><span>📋</span>No session records yet.</div>'; return; }
+  el.innerHTML=sessionLog.map((h,i)=>`<div class="hitem">
+    <span class="hnum">${sessionLog.length-i}</span>
+    <div class="hmain">
+      <div class="hroll">${h.rollNo}</div><div class="hname">${h.name||''}</div>
+      <span class="htopic">#${h.topicNo} ${h.topicName||''}</span>
+      ${h.comments?`<div class="hcomment">"${h.comments}"</div>`:''}
+    </div>
+    <div class="hright"><div class="hdate">${h.speechDate||''}</div><div class="hfac">${h.faculty||''}</div></div>
+  </div>`).join('');
 }
 
 function exportCSV() {
-  if (!sessionLog.length) { toast('No history to export', 'info'); return; }
-  const rows = ['#,Roll No,Name,Year,Section,Topic No,Topic Name,Speech Date,Comments,Faculty',
-    ...sessionLog.map((h, i) => `${sessionLog.length - i},${h.rollNo},${h.name || ''},${h.year || currentYear},${h.section || currentSection},${h.topicNo},${h.topicName || ''},${h.speechDate || ''},${(h.comments || '').replace(/,/g, ' ')},${h.faculty || ''}`)];
-  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `extempore_${currentYear}_${currentSection}_${new Date().toISOString().slice(0, 10)}.csv`;
-  a.click(); toast('CSV downloaded!', 'success');
+  if (!sessionLog.length) { toast('No history to export','info'); return; }
+  const rows=['#,Roll No,Name,Year,Section,Topic No,Topic Name,Speech Date,Comments,Faculty',
+    ...sessionLog.map((h,i)=>`${sessionLog.length-i},${h.rollNo},${h.name||''},${h.year||currentYear},${h.section||currentSection},${h.topicNo},${h.topicName||''},${h.speechDate||''},${(h.comments||'').replace(/,/g,' ')},${h.faculty||''}`)];
+  const blob=new Blob([rows.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`extempore_${currentYear}_${currentSection}_${new Date().toISOString().slice(0,10)}.csv`; a.click(); toast('CSV downloaded!','success');
 }
 
 /* ══════════════ FACULTY ══════════════ */
 function changeFaculty() {
-  openModal('👤 Set Faculty Name', `
-    <div><div class="mlbl">Faculty / Instructor Name</div>
-    <input class="minput" id="facInput" value="${facultyName}" placeholder="Enter your name…"></div>
-    <div class="mactions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-coral" onclick="saveFaculty()">Save</button>
-    </div>`);
-  setTimeout(() => document.getElementById('facInput').focus(), 100);
+  openModal('👤 Set Faculty Name',`<div><div class="mlbl">Faculty Name</div><input class="minput" id="facInput" value="${facultyName}" placeholder="Enter your name…"></div>
+    <div class="mactions"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-coral" onclick="saveFaculty()">Save</button></div>`);
+  setTimeout(()=>document.getElementById('facInput').focus(),100);
 }
 
 function saveFaculty() {
-  const v = document.getElementById('facInput').value.trim();
-  if (!v) return;
-  facultyName = v;
-  document.getElementById('facBadge').textContent = '👤 ' + v;
-  closeModal(); toast('Faculty name saved', 'success');
-}
-
-/* ══════════════ TIMER ══════════════ */
-function toggleTimer() { document.getElementById('timerCard').classList.toggle('open'); }
-function setTimer(s) {
-  timerSecs = s; timerRem = s; timerRunning = false; clearInterval(timerInterval);
-  updateTimerDisplay();
-  document.querySelectorAll('.tpre').forEach(b => {
-    const v = parseInt(b.textContent) * 60; b.classList.toggle('on', v === s);
-  });
-}
-function startTimer() {
-  if (timerRunning) return; timerRunning = true;
-  timerInterval = setInterval(() => {
-    timerRem--;
-    if (timerRem <= 0) { timerRem = 0; clearInterval(timerInterval); timerRunning = false; toast("⏰ Time's up!", "info"); }
-    updateTimerDisplay();
-  }, 1000);
-}
-function pauseTimer() { timerRunning = false; clearInterval(timerInterval); }
-function resetTimer() { timerRunning = false; clearInterval(timerInterval); timerRem = timerSecs; updateTimerDisplay(); }
-function updateTimerDisplay() {
-  const m = Math.floor(timerRem / 60), s = timerRem % 60;
-  const el = document.getElementById('tdisp');
-  el.textContent = m + ':' + String(s).padStart(2, '0');
-  el.className = 'tdisplay' + (timerRem <= 20 && timerRem > 0 ? ' warn' : timerRem === 0 ? ' done' : '');
+  const v=document.getElementById('facInput').value.trim(); if(!v) return;
+  facultyName=v; document.getElementById('facBadge').textContent='👤 '+v; closeModal(); toast('Faculty name saved','success');
 }
 
 /* ══════════════ CONFETTI ══════════════ */
-function launchConfetti(count = 75) {
-  const c = document.getElementById('cfx');
-  const cols = ['#d9481a','#e8622e','#FFD43B','#40C057','#339AF0','#CC5DE8','#F06595','#20C997','#ffd700','#b197fc'];
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div'); el.className = 'cp';
-    el.style.cssText = `left:${Math.random() * 100}vw;background:${cols[Math.floor(Math.random() * cols.length)]};
-      border-radius:${Math.random() > .5 ? '50%' : '3px'};
-      width:${Math.random() * 10 + 5}px;height:${Math.random() * 10 + 5}px;
-      animation-duration:${Math.random() * 2.5 + 2}s;animation-delay:${Math.random() * .9}s`;
-    c.appendChild(el); setTimeout(() => el.remove(), 5000);
+function launchConfetti(count=75) {
+  const c=document.getElementById('cfx');
+  const cols=['#d9481a','#e8622e','#FFD43B','#40C057','#339AF0','#CC5DE8','#F06595','#20C997','#ffd700','#b197fc'];
+  for(let i=0;i<count;i++){
+    const el=document.createElement('div'); el.className='cp';
+    el.style.cssText=`left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;animation-duration:${Math.random()*2.5+2}s;animation-delay:${Math.random()*.9}s`;
+    c.appendChild(el); setTimeout(()=>el.remove(),5000);
   }
 }
 
 /* ══════════════ TOAST ══════════════ */
 let toastTimer;
-function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show' + (type ? ' ' + type : '');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+function toast(msg, type='') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show'+(type?' '+type:'');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
 /* ══════════════ MODAL ══════════════ */
 function openModal(title, bodyHTML) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalBody').innerHTML = bodyHTML;
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalBody').innerHTML=bodyHTML;
   document.getElementById('modalOverlay').classList.add('open');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 
 /* ══════════════ NAV ══════════════ */
-const PAGE_ORDER = ['spin', 'topics', 'students', 'history', 'analytics', 'report'];
+const PAGE_ORDER=['spin','topics','students','history','analytics','report'];
 function goTo(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  const idx = PAGE_ORDER.indexOf(name);
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const idx=PAGE_ORDER.indexOf(name);
   document.querySelectorAll('.bn')[idx].classList.add('active');
-  if (name === 'students')  renderStudents();
-  if (name === 'history')   loadHistory();
-  if (name === 'analytics') loadAnalytics();
-  if (name === 'topics')    renderTopicList();
+  if(name==='students') renderStudents();
+  if(name==='history')  loadHistory();
+  if(name==='analytics') loadAnalytics();
+  if(name==='topics')   renderTopicList();
+}
+
+/* ══════════════ REPORT ══════════════ */
+async function loadReportData() {
+  toast('Loading report data…', 'info');
+  try {
+    // Force fresh reload from backend — don't rely on stale in-memory state
+    const [studData, topData, logData] = await Promise.all([
+      api("getStudents",   { year: currentYear, section: currentSection }),
+      api("getTopics",     { year: currentYear, section: currentSection }),
+      api("getSessionLog", { year: currentYear, section: currentSection })
+    ]);
+    allStudents  = studData.students;
+    activeRolls  = allStudents.filter(s => s.status !== 'Completed');
+    doneRolls    = allStudents.filter(s => s.status === 'Completed');
+    allTopics    = topData.topics;
+    activeTopics = [...allTopics];
+    sessionLog   = logData.log;
+    updateStats();
+    toast('✅ Report data loaded! (' + allStudents.length + ' students, ' + sessionLog.length + ' session records)', 'success');
+  } catch(e) {
+    toast('⚠ ' + e.message, 'error');
+  }
+}
+
+function buildReportHTML() {
+  const o={
+    stats:    document.getElementById('ropt1').checked,
+    fullList: document.getElementById('ropt2').checked,
+    topics:   document.getElementById('ropt3').checked,
+    remarks:  document.getElementById('ropt4').checked,
+    slog:     document.getElementById('ropt5').checked,
+    pending:  document.getElementById('ropt6').checked
+  };
+  const now=new Date(),
+        ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'}),
+        ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const total=allStudents.length, done=doneRolls.length, pend=activeRolls.length,
+        pct=total?Math.round(done/total*100):0;
+
+  // Build a remarks lookup: rollNo → {comments, faculty, speechDate, topicName}
+  // Priority: sessionLog (has faculty name) → fallback to allStudents.comments
+  const remarksMap = {};
+  // First seed from allStudents (has comments from sheet col I)
+  allStudents.forEach(s => {
+    if (s.comments) remarksMap[s.rollNo] = { comments: s.comments, faculty: facultyName, topicName: s.topicNo ? '#'+s.topicNo : '–' };
+  });
+  // Then override/enrich from sessionLog (has faculty name + topicName)
+  sessionLog.forEach(entry => {
+    if (entry.rollNo) {
+      remarksMap[entry.rollNo] = {
+        comments:  entry.comments  || '',
+        faculty:   entry.faculty   || facultyName,
+        topicName: entry.topicNo ? '#' + entry.topicNo + ' ' + (entry.topicName||'') : '–',
+        speechDate:entry.speechDate || ''
+      };
+    }
+  });
+
+  let h = `<div class="rp-header">
+    <div class="rp-title">🎤 Extempore Speech Report</div>
+    <div class="rp-sub">Class Performance Report</div>
+    <div class="rp-meta">
+      <span>📅 ${ds} ${ts}</span>
+      ${currentYear    ? `<span>🎓 ${currentYear}</span>`    : ''}
+      ${currentSection ? `<span>🏷 ${currentSection}</span>` : ''}
+      <span>👤 ${facultyName}</span>
+    </div>
+  </div>`;
+
+  // ── Summary Stats ──
+  if (o.stats) {
+    h += `<div class="rp-section">
+      <div class="rp-section-title">📊 Summary</div>
+      <div class="rp-stat-grid">
+        <div class="rp-stat"><span class="n" style="color:#d9481a">${total}</span><span class="l">Total</span></div>
+        <div class="rp-stat"><span class="n" style="color:#1e9e5c">${done}</span><span class="l">Completed</span></div>
+        <div class="rp-stat"><span class="n" style="color:#d9481a">${pend}</span><span class="l">Not Completed</span></div>
+        <div class="rp-stat"><span class="n" style="color:#1a5fb4">${pct}%</span><span class="l">Progress</span></div>
+      </div>
+      <div class="rp-progress-bar"><div class="rp-progress-fill" style="width:${pct}%"></div></div>
+      <p style="text-align:center;color:#7a6e62;font-size:.76rem;margin-top:8px">${done} / ${total} students completed</p>
+    </div>`;
+  }
+
+  // ── Full Student List ──
+  if (o.fullList && allStudents.length) {
+    h += `<div class="rp-section">
+      <div class="rp-section-title">📋 All Students (${total})</div>
+      <table class="rp-table"><thead><tr>
+        <th>#</th><th>Roll No</th><th>Name</th><th>Status</th><th>Topic</th><th>Date</th>
+        ${o.remarks ? '<th>Faculty Remarks</th>' : ''}
+      </tr></thead><tbody>
+      ${allStudents.map((s,i) => {
+        const rm = remarksMap[s.rollNo] || {};
+        const remarkText = rm.comments || '–';
+        return `<tr>
+          <td>${i+1}</td>
+          <td style="font-family:monospace;font-weight:700">${s.rollNo}</td>
+          <td>${s.name||'–'}</td>
+          <td class="${s.status==='Completed'?'rp-done':'rp-pending'}">${s.status==='Completed'?'✓ Completed':'⏳ Not Completed'}</td>
+          <td style="font-family:monospace">${s.topicNo ? '#'+s.topicNo : '–'}</td>
+          <td style="font-family:monospace">${s.speechDate||'–'}</td>
+          ${o.remarks ? `<td class="rp-comment">${remarkText}</td>` : ''}
+        </tr>`;
+      }).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── Pending List ──
+  if (o.pending && activeRolls.length) {
+    h += `<div class="rp-section">
+      <div class="rp-section-title">⏳ Not Completed Students (${activeRolls.length})</div>
+      <table class="rp-table"><thead><tr><th>#</th><th>Roll No</th><th>Name</th></tr></thead><tbody>
+      ${activeRolls.map((s,i) => `<tr><td>${i+1}</td><td style="font-family:monospace;font-weight:700">${s.rollNo}</td><td>${s.name||'–'}</td></tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── Topics ──
+  if (o.topics && allTopics.length) {
+    h += `<div class="rp-section">
+      <div class="rp-section-title">📝 Topics (${allTopics.length})</div>
+      <table class="rp-table"><thead><tr><th>#</th><th>Name</th><th>Added</th><th>Used</th><th>Year</th><th>Section</th></tr></thead><tbody>
+      ${allTopics.map(t => `<tr>
+        <td style="font-family:monospace">${t.topicNo}</td>
+        <td style="font-weight:600">${t.topicName}</td>
+        <td style="font-family:monospace">${t.addedDate||'–'}</td>
+        <td style="text-align:center">${t.usedCount||0}</td>
+        <td>${t.year||'–'}</td><td>${t.section||'–'}</td>
+      </tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── 🆕 Faculty Remarks — DEDICATED SECTION ──
+  // Shows every completed student with their remark pulled from sessionLog + allStudents
+  if (o.remarks) {
+    const completedWithData = allStudents.filter(s => s.status === 'Completed');
+    h += `<div class="rp-section">
+      <div class="rp-section-title">💬 Faculty Remarks (${completedWithData.length} students)</div>`;
+    if (!completedWithData.length) {
+      h += `<p style="color:#a89e92;font-size:.8rem;padding:10px 0">No completed speeches yet.</p>`;
+    } else {
+      h += `<table class="rp-table"><thead><tr>
+        <th>#</th><th>Roll No</th><th>Name</th><th>Topic</th><th>Date</th><th>Faculty</th><th>Remarks</th>
+      </tr></thead><tbody>
+      ${completedWithData.map((s, i) => {
+        const rm = remarksMap[s.rollNo] || {};
+        return `<tr>
+          <td>${i+1}</td>
+          <td style="font-family:monospace;font-weight:700;color:#d9481a">${s.rollNo}</td>
+          <td style="font-weight:600">${s.name||'–'}</td>
+          <td style="font-family:monospace">${rm.topicName || (s.topicNo ? '#'+s.topicNo : '–')}</td>
+          <td style="font-family:monospace">${rm.speechDate || s.speechDate || '–'}</td>
+          <td>${rm.faculty || facultyName}</td>
+          <td class="rp-comment" style="font-style:italic;color:#4a3f32">${rm.comments || '<span style="color:#ccc">No remark</span>'}</td>
+        </tr>`;
+      }).join('')}
+      </tbody></table>`;
+    }
+    h += `</div>`;
+  }
+
+  // ── Session Log ──
+  if (o.slog && sessionLog.length) {
+    h += `<div class="rp-section">
+      <div class="rp-section-title">📅 Session Log (${sessionLog.length})</div>
+      <table class="rp-table"><thead><tr>
+        <th>#</th><th>Roll No</th><th>Name</th><th>Topic</th><th>Date</th><th>Faculty</th>
+        ${o.remarks ? '<th>Remarks</th>' : ''}
+      </tr></thead><tbody>
+      ${sessionLog.map((entry, i) => `<tr>
+        <td>${sessionLog.length - i}</td>
+        <td style="font-family:monospace;font-weight:700;color:#d9481a">${entry.rollNo}</td>
+        <td>${entry.name||'–'}</td>
+        <td>#${entry.topicNo} ${entry.topicName||''}</td>
+        <td style="font-family:monospace">${entry.speechDate||''}</td>
+        <td>${entry.faculty||'–'}</td>
+        ${o.remarks ? `<td class="rp-comment">${entry.comments||'–'}</td>` : ''}
+      </tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  h += `<div style="text-align:center;margin-top:28px;padding-top:14px;border-top:1px solid #e4ddd2;font-size:.68rem;color:#a89e92">
+    Extempore Speech Picker · ${ds} ${ts} · ${facultyName}
+  </div>`;
+  return h;
+}
+
+function previewReport() {
+  if (!allStudents.length) { toast('Click 🔄 Load Data first','info'); return; }
+  document.getElementById('reportPreviewBox').innerHTML=buildReportHTML();
+  const pa=document.getElementById('reportPreviewArea'); pa.style.display='block'; pa.scrollIntoView({behavior:'smooth'}); toast('Preview ready!','success');
+}
+
+function generatePrintReport() {
+  if (!allStudents.length) { toast('Click 🔄 Load Data first','info'); return; }
+  const html=buildReportHTML();
+  const w=window.open('','_blank','width=960,height=750');
+  w.document.write(`<!DOCTYPE html><html><head><title>Extempore Report</title>
+    <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1510;padding:24px 32px;max-width:920px;margin:0 auto}
+    .rp-header{text-align:center;border-bottom:3px solid #d9481a;padding-bottom:16px;margin-bottom:24px}.rp-title{font-size:1.9rem;font-weight:800;color:#1a1510;font-family:Georgia,serif}
+    .rp-sub{font-size:.9rem;color:#7a6e62;margin-top:6px}.rp-meta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:.76rem;color:#7a6e62}
+    .rp-meta span{background:#f4efe8;border:1px solid #e2d9cd;padding:3px 12px;border-radius:20px}.rp-section{margin-bottom:28px}
+    .rp-section-title{font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#d9481a;border-bottom:2px solid #e4ddd2;padding-bottom:7px;margin-bottom:14px}
+    .rp-progress-bar{height:12px;background:#e4ddd2;border-radius:7px;overflow:hidden;margin:10px 0}.rp-progress-fill{height:100%;background:linear-gradient(90deg,#d9481a,#c2185b,#1a5fb4);border-radius:7px}
+    .rp-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}.rp-stat{background:#f4efe8;border:1px solid #e2d9cd;border-radius:12px;padding:14px;text-align:center}
+    .rp-stat .n{font-size:1.8rem;font-weight:700;display:block;font-family:monospace}.rp-stat .l{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a6e62;display:block;margin-top:4px}
+    table{width:100%;border-collapse:collapse;font-size:.8rem}th{background:#d9481a;color:#fff;padding:8px 10px;text-align:left;font-size:.7rem;letter-spacing:.06em}td{padding:7px 10px;border-bottom:1px solid #e4ddd2}
+    tr:nth-child(even) td{background:#faf7f3}.rp-done{color:#1e9e5c;font-weight:700}.rp-pending{color:#d9481a;font-weight:700}.rp-comment{font-style:italic;color:#7a6e62;font-size:.74rem}
+    .print-btn{background:#d9481a;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-right:8px}
+    .close-btn{background:#f4efe8;border:1px solid #e2d9cd;padding:10px 18px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer}
+    @media print{.no-print{display:none!important}}</style></head><body>
+  <div class="no-print" style="text-align:right;margin-bottom:18px">
+    <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+    <button class="close-btn" onclick="window.close()">✕ Close</button>
+  </div>${html}</body></html>`);
+  w.document.close(); toast('🖨 Report opened!','success');
 }
 
 /* ══════════════ RESIZE ══════════════ */
-window.addEventListener('resize', () => {
+window.addEventListener('resize',()=>{
   drawRollWheel(); drawTopicWheel();
-  if (gameModeOn) { const c = document.getElementById('particleCanvas'); c.width = window.innerWidth; c.height = window.innerHeight; }
+  if(gameModeOn){const c=document.getElementById('particleCanvas');c.width=window.innerWidth;c.height=window.innerHeight;}
 });
 
 /* ══════════════ BOOT ══════════════ */
